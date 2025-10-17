@@ -1,27 +1,27 @@
 "use client";
-import PageHeader from "@/components/myUi/PageHeader";
-import { useEffect, useState } from "react";
-import PortalsTable from "./_components/PortalsTable";
-import portalColumns from "./_components/portalColumn";
-import PortalForm from "./_components/PortalForm";
-import FormModal from "@/components/myUi/FormModal";
 import {
   addUpdatePortal,
   deletePortal,
   getAllPortals,
   multiDeletePortals,
 } from "@/actions/basics/portals";
-import { toast } from "sonner";
-import useSingleDelete from "@/hooks/useSingleDelete";
-import { useMultiDelete } from "@/hooks/useMultiDelete";
+import FormModal from "@/components/myUi/FormModal";
+import PageHeader from "@/components/myUi/PageHeader";
 import useFormSubmit from "@/hooks/useFormSubmit";
+import { useMultiDelete } from "@/hooks/useMultiDelete";
+import useSingleDelete from "@/hooks/useSingleDelete";
+import { useEffect, useState } from "react";
+import portalColumns from "./_components/portalColumn";
+import PortalForm from "./_components/PortalForm";
+import PortalsTable from "./_components/PortalsTable";
+import useFetchData from "@/hooks/useFetchData";
+import Loading from "@/app/Loading";
 
 const PortalsPage = () => {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [portalData, setPortalData] = useState([]);
   const [editingData, setEditingData] = useState(null);
-  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     const fetchPortals = async () => {
@@ -69,6 +69,7 @@ const PortalsPage = () => {
   //   }
   // };
 
+  // Portal add update form
   const { handleFormSubmit: handleSubmit, loading: formSubmitLoading } =
     useFormSubmit({
       formSubmitAction: addUpdatePortal,
