@@ -19,6 +19,7 @@ import {
   DropdownMenuContent,
   DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
+import { Loader2 } from "lucide-react";
 
 // Select-all checkbox rendered in the table header
 const HeaderSelectAllCheckbox = ({ table }) => {
@@ -136,7 +137,7 @@ const ColumnHeaderRows = ({
   );
 };
 
-const RowActions = ({ record, onEdit, onDelete }) => {
+const RowActions = ({ record, onEdit, onDelete, deleting }) => {
   return (
     <div className="flex items-center justify-end gap-2">
       {onEdit && (
@@ -150,7 +151,11 @@ const RowActions = ({ record, onEdit, onDelete }) => {
           size="icon"
           onClick={() => onDelete(record.id)}
         >
-          <Trash2 className="h-4 w-4" />
+          {deleting ? (
+            <Loader2 className="h-4 w-4 animate-spin" />
+          ) : (
+            <Trash2 className="h-4 w-4" />
+          )}
         </Button>
       )}
     </div>

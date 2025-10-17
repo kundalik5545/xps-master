@@ -87,3 +87,78 @@ Cursor-specific behaviors
 - Prefer minimal diffs; avoid reformatting unrelated files.
 - Reference existing code in answers using line-number code references when possible.
 - For new code proposals in chat, use proper fenced code blocks with language tags.
+
+Portals-style feature blueprint (replicate this pattern)
+
+- Structure (example for portals)
+
+  - `app/(main)/<area>/<feature>/page.jsx` (client component)
+  - `app/(main)/<area>/<feature>/_components/`
+    - `<Feature>Form.jsx`
+    - `<Feature>Table.jsx`
+    - `<Feature>Filter.jsx`
+    - `<feature>Column.js`
+  - `actions/<area>/<feature>.js` (server actions)
+
+- Server actions file
+
+  - Add `'use server'` pragma at top.
+  - Import: `prisma` from `@/db/db.config`, `ApiRes` from `@/lib/ApiResponse`, `STATUS` from `@/lib/Statuses`.
+  - Validation: use `ZodFormValidator({ payload, formSchema })` with a `zod` schema in `lib/Schema/*`.
+  - Export the following named functions:
+    - `getAll<Plural>()` → `ApiRes(true, STATUS.OK, msg, data)`
+    - `addUpdate<Singular>({ payload, actions })` where `actions ∈ {"add","update"}`
+      - For `add`, validate `payload` (or `payload.formData`) and `prisma.<model>.create({ data })`
+      - For `update`, expect `{ id, formData }` inside `payload`, validate, and `prisma.<model>.update({ where: { id }, data })`
+    - `delete<Singular>(id)` → `prisma.<model>.delete({ where: { id } })`
+    - `multiDelete<Plural>(ids)` → `prisma.<model>.deleteMany({ where: { id: { in: ids } } })`
+  - Model name must match Prisma client (lowercased plural, e.g., `portals`, `xpsMenus`).
+  - Always return `ApiRes` with populated `data` field; consumers should read `res.data` (not custom keys).
+
+- Page component (`page.jsx`)
+
+  - Mark as client: `'use client'`.
+  - Local state: `isDialogOpen`, `isEditing`, `<feature>Data` (array), `editingData` (nullable), `loading`.
+  - `useEffect` fetch: call `getAll<Plural>()` on mount, set `<feature>Data` from `res.data`.
+  - `handleSubmit(formData)`
+    - Derive `actions` from `isEditing`.
+    - Build `payload`: for update include `{ formData, id: editingData.id }`; for add use `formData`.
+    - Call `addUpdate<Singular>({ payload, actions })`.
+    - On success, optimistically update local array (map/replace on update, append on add), reset editing state, close modal, and toast via `sonner`.
+  - Provide `onEdit(record)` to set `editingData` and open the modal; wire `onDelete`, `handleMultiDelete` to actions.
+  - Render:
+    - `PageHeader` with add button toggling modal state
+    - `<Feature>Table` with `data`, `columns`, bulk delete handler, `loading`
+    - `FormModal` wrapping `<Feature>Form` with `onFormSubmit` and `editingData`
+
+- Table component (`<Feature>Table.jsx`)
+
+  - Use `@tanstack/react-table` with state: `sorting`, `columnFilters`, `rowSelection`.
+  - Expose `resetFilters()` clearing all three states.
+  - `handleMultiDelete()` should collect selected row ids, call parent `onMultiRowDelete(ids)`, and reset selection after the promise resolves.
+  - Use shared UI: `Table`, `TableHeading`, `TableNoResults`, `TableRowCellCheckBox`, `TableRowCellText`, `TablePagination` from `components/ui` and `components/myUi`.
+  - For link-like cells (e.g., URLs), render a `Button variant="link"` opening `window.open(value, "_blank")`.
+
+- Columns config (`<feature>Column.js`)
+
+  - Default export a function `({ onEdit, onDelete }) => ColumnDef[]`.
+  - Define column objects with `accessorKey`, `header`, and flags (`enableSorting`, `enableHiding`, `enableColumnFilter`).
+  - Add an actions column with `id: 'actions'`, `header: () => <TableActionsHeader />`, and `cell: ({ row }) => <TableActions record={row.original} onEdit={onEdit} onDelete={onDelete} />`.
+
+- Form component (`<Feature>Form.jsx`)
+
+  - Client component using `react-hook-form` with `zodResolver(schema)`.
+  - `defaultValues`: use `editingData` if present; otherwise provide empty defaults for controlled inputs.
+  - Submit calls `onFormSubmit(values)`; include explicit Reset handling (`form.reset(); form.clearErrors();`).
+  - Use shared `Form`, `FormField`, `FormItem`, `FormLabel`, `FormControl`, `FormMessage`, and inputs from `components/ui`.
+  - Follow the portals example for optional password visibility toggling where relevant.
+
+- Feedback and errors
+
+  - Use `sonner` to toast success and failures at the page level.
+  - Server actions must catch errors and return `ApiRes(false, STATUS.INTERNAL_SERVER_ERROR, message, null)`.
+
+- Naming rules
+  - Files: `page.jsx`, `<Feature>Form.jsx`, `<Feature>Table.jsx`, `<Feature>Filter.jsx`, `<feature>Column.js`.
+  - Actions: `getAll<Plural>`, `addUpdate<Singular>`, `delete<Singular>`, `multiDelete<Plural>`.
+  - Keep feature directories under `app/(main)/<area>/<feature>` and mirror in `actions/<area>/<feature>.js`.

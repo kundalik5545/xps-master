@@ -3,7 +3,7 @@ import {
   TableActionsHeader,
 } from "@/components/myUi/TableComponents";
 
-export const portalColumns = ({ onEdit, onDelete }) => [
+export const portalColumns = ({ onEdit, onDelete, deleting }) => [
   {
     accessorKey: "portalName",
     header: "Portal Name",
@@ -55,7 +55,12 @@ export const portalColumns = ({ onEdit, onDelete }) => [
     cell: ({ row }) => {
       const record = row.original;
       return (
-        <TableActions record={record} onEdit={onEdit} onDelete={onDelete} />
+        <TableActions
+          record={record}
+          onEdit={onEdit}
+          onDelete={onDelete}
+          deleting={deleting}
+        />
       );
     },
   },

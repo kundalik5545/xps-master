@@ -2,6 +2,7 @@
 
 import prisma from "@/db/db.config";
 import { ApiRes } from "@/lib/ApiResponse";
+import { PortalFormSchema, ZodFormValidator } from "@/lib/Schema/FormSchema";
 import STATUS from "@/lib/Statuses";
 
 // Fetch all portals from db
@@ -22,44 +23,68 @@ const getAllPortals = async () => {
 
 //Add update Portal
 const addUpdatePortal = async ({ payload, actions }) => {
-  // zod form data validator
-  const parseResult = ZodFormValidator({
-    payload,
-    formSchema: portalFormSchema,
-  });
-
-  // Add new entry
-  if (actions === "add") {
-    const res = await prisma.portal.create({ data: parseResult.data });
-
-    return ApiRes(true, STATUS.CREATED, "New portal added successfuly", res);
-  }
-
-  // Update new entry
-  if (actions === "update") {
-    const { id } = payload;
-
-    const res = await prisma.portal.update({
-      where: {
-        id,
-      },
-      data: parseResult.data,
+  try {
+    // zod form data validator
+    const parseResult = ZodFormValidator({
+      payload,
+      formSchema: PortalFormSchema,
     });
 
-    return ApiRes(true, STATUS.OK, "New portal updated successfuly", res);
+    // Add new entry
+    if (actions === "add") {
+      const newPortal = await prisma.portals.create({ data: parseResult.data });
+
+      return ApiRes(
+        true,
+        STATUS.CREATED,
+        "New portal added successfuly",
+        newPortal
+      );
+    }
+
+    // Update new entry
+    if (actions === "update") {
+      const { id } = payload;
+
+      const updatedPortal = await prisma.portals.update({
+        where: {
+          id,
+        },
+        data: parseResult.data,
+      });
+
+      return ApiRes(
+        true,
+        STATUS.OK,
+        "New portal updated successfuly",
+        updatedPortal
+      );
+    }
+  } catch (error) {
+    return ApiRes(
+      false,
+      STATUS.INTERNAL_SERVER_ERROR,
+      `Error while adding/updating portal: ${error.message}`,
+      null
+    );
   }
 };
 
 //Delete single portal
 const deletePortal = async (deleteId) => {
   try {
-    const res = await prisma.portal.delete({
+    const deletedPortal = await prisma.portals.delete({
       where: {
         id: deleteId,
       },
     });
 
-    return ApiRes(true, STATUS.OK, "Portal deleted successfully", res);
+    return ApiRes(
+      true,
+      STATUS.OK,
+      "Portal deleted successfully",
+      deletedPortal
+    );
   } catch (error) {
     return ApiRes(
       false,
@@ -73,7 +98,7 @@ const deletePortal = async (deleteId) => {
 // Multidelete portals server action
 const multiDeletePortals = async (selectedIds) => {
   try {
-    const result = await prisma.portal.deleteMany({
+    const result = await prisma.portals.deleteMany({
       where: {
         id: { in: selectedIds },
       },

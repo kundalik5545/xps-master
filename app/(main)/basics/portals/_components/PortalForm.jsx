@@ -82,16 +82,20 @@ export default function PortalForm({ onFormSubmit, editingData }) {
                         <SelectValue placeholder="Select Portal Name" />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem key="Default" value="Default">
-                          Default
-                        </SelectItem>
-
                         <SelectItem key="XPS" value="XPS">
                           XPS
                         </SelectItem>
-
-                        <SelectItem key="EMember" value="EMember">
-                          EMember
+                        <SelectItem key="eMember" value="eMember">
+                          eMember
+                        </SelectItem>
+                        <SelectItem key="CAT" value="CAT">
+                          CAT
+                        </SelectItem>
+                        <SelectItem key="Fusion" value="Fusion">
+                          Fusion
+                        </SelectItem>
+                        <SelectItem key="Hangfire" value="Hangfire">
+                          Hangfire
                         </SelectItem>
                       </SelectContent>
                     </Select>
