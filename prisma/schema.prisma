@@ -1,0 +1,367 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+
+model Portals {
+  id            Int       @id @default(autoincrement())
+  portalName    PortalName
+  appName       String
+  userName      String?
+  password      String?
+  memorableWord String?
+  appURL       String?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+}
+
+model Users {
+  id             Int       @id @default(autoincrement())
+  eMemberId      Int?      @unique
+  xpsId          Int?      @unique
+  userHashId     String?   @unique
+  username       String?
+  password       String?
+  memorableWord  String?
+  userStatusId   Int?
+  userEmail      String?
+  DOB            DateTime?
+  niNumber       String?   @unique
+  addressId      Int?
+  postcode       String?
+  xpsSchemeId    Int?
+  eMemberSchemeId Int?
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+}
+
+model XpsMenus {
+  id                    Int                  @id @default(autoincrement())
+  menuName              String
+  schemeLevel           SchemeLevel
+  module                Module
+  automationStatus      AutomationStatus
+  userGuideId           Int?
+  xpsMenuDescriptions   XpsMenuDescriptions[]
+  xpsUserGuides         XpsUserGuides[]
+  xpsTables             XpsTables[]
+  xpsScripts            XpsScripts[]
+  xpsTestCases          XpsTestCases[]
+  xpsBugs               XpsBugs[]
+  xpsReleasedTasks      XpsReleasedTasks[]
+  createdAt             DateTime             @default(now())
+  updatedAt             DateTime             @updatedAt
+}
+
+model XpsMenuDescriptions {
+  id         Int       @id @default(autoincrement())
+  comment    String?
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+
+  xpsMenu    XpsMenus? @relation(fields: [xpsMenuId], references: [id])
+  xpsMenuId  Int?
+}
+
+model XpsUserGuides {
+  id         Int       @id @default(autoincrement())
+  chapterNo  Int?
+  chapterName String
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+
+  xpsMenu    XpsMenus? @relation(fields: [xpsMenuId], references: [id])
+  xpsMenuId  Int?
+}
+
+model XpsTestCases {
+  id             Int        @id @default(autoincrement())
+  testCaseNo     String?
+  testCaseName   String
+  schemeType     SchemeType?
+  schemeLevel    SchemeLevel
+  module         Module
+  automationStatus AutomationStatus
+  expectedResult String?
+  actualResult   String?
+  comments       String?
+  menuName       String?
+  createdAt      DateTime   @default(now())
+  updatedAt      DateTime   @updatedAt
+
+  xpsMenu        XpsMenus?  @relation(fields: [xpsMenuId], references: [id])
+  xpsMenuId      Int?
+}
+
+model XpsTables {
+  id          Int          @id @default(autoincrement())
+  tableName   String       @unique
+  xpsColumns  XpsColumns[]
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+
+  xpsMenu     XpsMenus?    @relation(fields: [xpsMenuId], references: [id])
+  xpsMenuId   Int?
+}
+
+model XpsColumns {
+  id         Int       @id @default(autoincrement())
+  columnName String?
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+
+  xpsTable   XpsTables? @relation(fields: [xpsTableId], references: [id])
+  xpsTableId Int?
+}
+
+model XpsScripts {
+  id         Int       @id @default(autoincrement())
+  scriptTitle String
+  sqlScript  String
+  scriptInfo String?
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+
+  xpsMenu    XpsMenus? @relation(fields: [xpsMenuId], references: [id])
+  xpsMenuId  Int?
+}
+
+model XpsBugs {
+  id           Int       @id @default(autoincrement())
+  bugId        Int       @unique
+  bugTitle     String
+  portalName   PortalName
+  qaBugState   QaBugState
+  env          Env
+  assignedTo   AssignedTo
+  bugUrl       String
+  comments     String?
+  createdAt    DateTime?
+  updatedAt    DateTime  @updatedAt
+
+  xpsMenu      XpsMenus? @relation(fields: [xpsMenuId], references: [id])
+  xpsMenuId    Int?
+}
+
+model XpsReleasedTasks {
+  id          Int       @id @default(autoincrement())
+  taskId      Int       @unique
+  taskTitle   String
+  portalName  PortalName
+  taskState   TaskState
+  env         Env
+  assignedBy  AssignedBy
+  comments    String?
+  taskURL     String
+  createdAt   DateTime?
+  updatedAt   DateTime  @updatedAt
+
+  xpsMenu     XpsMenus? @relation(fields: [xpsMenuId], references: [id])
+  xpsMenuId   Int?
+}
+
+model Em_Menus {
+  id             Int               @id @default(autoincrement())
+  emMenuName     String
+  portalName     PortalName
+  automationStatus AutomationStatus
+  emUserGuideId  Int?
+  createdAt      DateTime          @default(now())
+  updatedAt      DateTime          @updatedAt
+
+  emMenuDescriptions Em_MenuDescription[]
+  emUserGuides       Em_UserGuide[]
+}
+
+model Em_MenuDescription {
+  id          String     @id @default(cuid())
+  emComment   String?
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+
+  emMenu      Em_Menus?  @relation(fields: [emMenuId], references: [id])
+  emMenuId    Int?
+}
+
+model Em_UserGuide {
+  id            String     @id @default(cuid())
+  emChapterNo   Int?
+  emChapterName String?
+  emResourceURL String?
+  createdAt     DateTime   @default(now())
+  updatedAt     DateTime   @updatedAt
+
+  emMenu        Em_Menus?  @relation(fields: [emMenuId], references: [id])
+  emMenuId      Int?
+}
+
+model Em_Tables {
+  id           Int          @id @default(autoincrement())
+  emTableName  String
+  emColumns    Em_Columns[]
+  createdAt    DateTime     @default(now())
+  updatedAt    DateTime     @updatedAt
+}
+
+model Em_Columns {
+  id           Int        @id @default(autoincrement())
+  emColumnName String
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
+
+  emTable      Em_Tables? @relation(fields: [emTableId], references: [id])
+  emTableId    Int?
+}
+
+model EM_Scripts {
+  id           String    @id @default(cuid())
+  emScriptTitle String
+  emSqlScript  String
+  emScriptInfo String?
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+}
+
+model EM_Bugs {
+  id           Int       @id @default(autoincrement())
+  emBugId      Int       @unique
+  emBugTitle   String
+  portalName   PortalName
+  qaBugState   QaBugState
+  env          Env
+  assignedTo   AssignedTo
+  emBugUrl     String
+  comments     String?
+  createdAt    DateTime?
+  updatedAt    DateTime  @updatedAt
+}
+
+model EM_ReleasedTasks {
+  id            Int       @id @default(autoincrement())
+  emTaskId      Int       @unique
+  emTaskTitle   String
+  portalName    PortalName
+  taskState     TaskState
+  env           Env
+  assignedBy    AssignedBy
+  emTaskUrl     String
+  emComments    String?
+  createdAt     DateTime?
+  updatedAt     DateTime  @updatedAt
+}
+
+model RegComments {
+  id         String     @id @default(cuid())
+  numId      Int        @unique
+  taskId     Int?
+  taskTitle  String?
+  comments   String?
+  portalName PortalName? @default(XPS)
+  createdAt  DateTime    @default(now())
+  updatedAt  DateTime    @updatedAt
+}
+
+model ProposedTask {
+  id           String     @id @default(cuid())
+  numId        Int        @unique
+  qaTaskId     Int        @unique
+  qaTaskTitle  String
+  qaTaskState  QaBugState?
+  timeAllocated String?
+  timeRemained  String?
+  qaComments    String?
+  qaTaskUrl     String?
+  createdAt     DateTime?
+  updatedAt     DateTime    @updatedAt
+}
+
+enum PortalName {
+  XPS
+  eMember
+  CAT
+  Fusion
+  Hangfire
+}
+
+enum SchemeLevel {
+  TL
+  SL
+  ML
+}
+
+enum Module {
+  Details
+  ToolsAndProcess
+  Letters
+  Reports
+  Leavers
+}
+
+enum TaskState {
+  Proposed
+  Active
+  Released
+  Resolved
+  Closed
+  Reassigned
+}
+
+enum Env {
+  ST
+  IAT
+  PROD
+  UAT
+}
+
+enum AssignedBy {
+  Kundalik
+  George
+  Priti
+  Steve
+  Swamy
+  Other
+}
+
+enum QaBugState {
+  Proposed
+  Active
+  Closed
+  Rejected
+  Reassigned
+  Resolved
+}
+
+enum AssignedTo {
+  Kundalik
+  George
+  Priti
+  Steve
+  Swamy
+  Other
+}
+
+enum AutomationStatus {
+  Automated
+  NotAutomated
+  InProgress
+  OnHold
+  Cancelled
+}
+
+enum SchemeType {
+  DB
+  DC
+  HYB
+  DB_HYB
+  DC_HYB
+  DB_DC
+}
