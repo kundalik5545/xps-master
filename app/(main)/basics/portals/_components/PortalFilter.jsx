@@ -3,8 +3,8 @@ import {
   FilterReset,
   InputFilter,
   SelectFilter,
-} from "@/components/myUis/FilterComponents";
-import { TableColVisibilitySelect } from "@/components/myUis/TableComponents";
+} from "@/components/myUi/FilterComponents";
+import { TableColVisibilitySelect } from "@/components/myUi/TableComponents";
 import { cn } from "@/lib/utils";
 
 const PortalFilter = ({
