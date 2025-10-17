@@ -1,6 +1,5 @@
 "use client";
 import { Button } from "@/components/ui/button";
-import { ArrowRightIcon } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
 
@@ -60,9 +59,7 @@ export default function HomeLanding() {
             speed, focus, and creativity.
           </p>
           <Link href="/basics/portals">
-            <Button variant="default">
-              Get Started <ArrowRightIcon className="w-4 h-4" />
-            </Button>
+            <Button variant="default">Get Started 👉</Button>
           </Link>
         </div>
       </section>

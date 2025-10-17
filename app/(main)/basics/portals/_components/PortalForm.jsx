@@ -16,6 +16,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { PortalFormSchema } from "@/lib/Schema/FormSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
   AppWindow,
@@ -28,22 +29,12 @@ import {
 } from "lucide-react";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { z } from "zod";
 
 export default function PortalForm({ onFormSubmit, editingData }) {
   const [showPassword, setShowPassword] = useState(false);
 
-  const formSchema = z.object({
-    portalName: z.string().min(1, { message: "This field is required" }),
-    appName: z.string().min(1, { message: "This field is required" }),
-    userName: z.string(),
-    password: z.string(),
-    memorableWord: z.string(),
-    appURL: z.string().url().optional(),
-  });
-
   const form = useForm({
-    resolver: zodResolver(formSchema),
+    resolver: zodResolver(PortalFormSchema),
     defaultValues: editingData || {
       portalName: "",
       appName: "",

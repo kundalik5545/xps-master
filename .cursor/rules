@@ -1,0 +1,89 @@
+# Cursor Rules for xps-master-by-jk
+
+Project context
+
+- Framework: Next.js (App Router), React 19
+- Styling: Tailwind CSS v4, Radix UI primitives, custom components in `components/ui` and `components/myUi`
+- Forms/validation: `react-hook-form` + `zod`
+- Data: Prisma ORM (SQLite by default), client exported from `db/db.config.js`
+- Aliases: `@/*` maps to the repository root (see `jsconfig.json`)
+
+General guidelines
+
+- Prefer clear, readable, and maintainable code over clever one-liners.
+- Use early returns instead of deep nesting; avoid unnecessary try/catch.
+- Follow existing export patterns:
+  - Named exports for utilities (for example, `lib/ApiResponse.js`, `lib/Log.js`).
+  - Default export for shared singletons (for example, Prisma in `db/db.config.js`).
+- Preserve existing indentation and formatting; do not reformat unrelated code.
+- Keep comments minimal; only add when they capture non-obvious rationale or caveats.
+
+UI conventions
+
+- Use `components/ui/*` and `components/myUi/*` before adding new UI primitives.
+- Compose classNames with `cn` from `lib/utils.js`.
+- Prefer Radix UI components where appropriate and Tailwind utility classes for layout.
+
+Server and data access
+
+- Use Prisma via `import prisma from "@/db/db.config"` for database access.
+- Return API/action results using `ApiRes(success, statusCode, message, data)` from `lib/ApiResponse.js`.
+- Use `log`/`logger` from `lib/Log.js` for structured logging.
+- Place server actions and data-access helpers under `actions/**` mirroring feature areas.
+
+Validation and schemas
+
+- Define form/data schemas with `zod` under `lib/Schema/*`.
+- Validate input at the boundary (server actions / API routes) before DB calls.
+
+Routing and files
+
+- App Router lives under `app/**`. Prefer colocating components inside feature folders.
+- Shared components belong in `components/**`.
+- Keep environment-specific values in `.env` (for example, `DATABASE_URL`).
+
+Prisma/DB
+
+- Schema is in `prisma/schema.prisma`; default datasource is SQLite with `prisma/dev.db`.
+- When changing the schema:
+  1. `npx prisma migrate dev --name <change>`
+  2. `npx prisma generate`
+- Generated client outputs to `generated/prisma` (already committed for convenience).
+
+Imports
+
+- Use the `@/` alias for root imports. Examples:
+  - `@/db/db.config`
+  - `@/lib/ApiResponse`
+  - `@/components/ui/button`
+
+Testing and linting
+
+- Run `npm run lint` locally and fix issues before committing.
+- Prefer small, focused edits. If a change spans many files, split into logical commits.
+
+Performance
+
+- Avoid unnecessary re-renders; memoize heavy components and values.
+- Defer non-critical work; prefer lazy import for rarely used components.
+
+Security
+
+- Never commit secrets. Keep credentials in `.env` and access via `process.env`.
+- Validate and sanitize all external inputs using `zod` schemas.
+
+Pull requests and commit style
+
+- Use descriptive commit messages in imperative mood (for example, "Add portals form validation").
+- Summarize user impact and any breaking changes in the PR description.
+
+When adding new code
+
+- Reuse existing helpers: `ApiRes`, `log`/`logger`, `cn`, and `PortalFormSchema` patterns.
+- Keep feature-specific actions/components close to their pages in `app/(main)/**` or `actions/**`.
+
+Cursor-specific behaviors
+
+- Prefer minimal diffs; avoid reformatting unrelated files.
+- Reference existing code in answers using line-number code references when possible.
+- For new code proposals in chat, use proper fenced code blocks with language tags.
