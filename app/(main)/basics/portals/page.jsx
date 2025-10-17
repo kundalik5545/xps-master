@@ -14,8 +14,6 @@ import { useEffect, useState } from "react";
 import portalColumns from "./_components/portalColumn";
 import PortalForm from "./_components/PortalForm";
 import PortalsTable from "./_components/PortalsTable";
-import useFetchData from "@/hooks/useFetchData";
-import Loading from "@/app/Loading";
 
 const PortalsPage = () => {
   const [isDialogOpen, setIsDialogOpen] = useState(false);

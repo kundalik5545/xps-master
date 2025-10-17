@@ -20,6 +20,7 @@ import {
   DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
 import { Loader2 } from "lucide-react";
+import { toast } from "sonner";
 
 // Select-all checkbox rendered in the table header
 const HeaderSelectAllCheckbox = ({ table }) => {
@@ -138,6 +139,8 @@ const ColumnHeaderRows = ({
 };
 
 const RowActions = ({ record, onEdit, onDelete, deleting }) => {
+  if (!deleting) return toast.error("Please Provide deleting function ...");
+
   return (
     <div className="flex items-center justify-end gap-2">
       {onEdit && (
