@@ -32,6 +32,8 @@ const PRISMA_MODELS = [
   { label: "XPS Scripts", value: "XpsScripts" },
   { label: "XPS Bugs", value: "XpsBugs" },
   { label: "XPS Released Tasks", value: "XpsReleasedTasks" },
+  { label: "🚀 Portals", value: "Portals" },
+  { label: "🚀 Users", value: "Users" },
 ];
 
 const SeedToXpsDbPage = () => {
@@ -96,7 +98,7 @@ const SeedToXpsDbPage = () => {
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
         <Card className="lg:col-span-2">
           <CardHeader>
-            <CardTitle>Seed Data to Database</CardTitle>
+            <CardTitle>Seed Data to XPS</CardTitle>
             <CardDescription>
               Upload an Excel file and choose a Prisma model to seed.
             </CardDescription>

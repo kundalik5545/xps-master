@@ -97,7 +97,7 @@ const SeedToDbPage = () => {
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
         <Card className="lg:col-span-2">
           <CardHeader>
-            <CardTitle>Seed Data to Database</CardTitle>
+            <CardTitle>Seed Data to EMember</CardTitle>
             <CardDescription>
               Upload an Excel file and choose a Prisma model to seed.
             </CardDescription>

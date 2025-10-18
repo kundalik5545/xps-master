@@ -96,7 +96,7 @@ export default function HomeLanding() {
           </span>
           <span>
             <Link
-              href="https://github.com/JK"
+              href="https://github.com/kundalik5545/xps-master"
               className="hover:underline"
               target="_blank"
               rel="noopener noreferrer"
