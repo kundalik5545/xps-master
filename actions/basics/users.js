@@ -14,10 +14,24 @@ const getAllUsers = async () => {
   }
 };
 
+const getUserById = async (userId) => {
+  try {
+    const user = await prisma.users.findUnique({
+      where: { id: Number(userId) },
+    });
+
+    if (!user) {
+      return ApiRes(false, STATUS.NOT_FOUND, "User not found", null);
+    }
+
+    return ApiRes(true, STATUS.OK, "User fetched successfully", user);
+  } catch (error) {
+    return ApiRes(false, STATUS.INTERNAL_SERVER_ERROR, error.message, null);
+  }
+};
+
 // Add update user
 const addUpdateUser = async ({ payload, actions }) => {
-  console.log("payload", payload);
-  console.log("actions", actions);
   try {
     // zod form data validator
     const parseResult = ZodFormValidator({
@@ -88,4 +102,10 @@ const multiDeleteUsers = async (selectedIds) => {
   }
 };
 
-export { getAllUsers, addUpdateUser, deleteUser, multiDeleteUsers };
+export {
+  getAllUsers,
+  getUserById,
+  addUpdateUser,
+  deleteUser,
+  multiDeleteUsers,
+};

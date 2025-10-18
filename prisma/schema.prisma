@@ -180,6 +180,11 @@ model Em_Menus {
 
   emMenuDescriptions Em_MenuDescription[]
   emUserGuides       Em_UserGuide[]
+  emTables           Em_Tables[]
+  emScripts          EM_Scripts[]
+  emBugs             EM_Bugs[]
+  emReleasedTasks    EM_ReleasedTasks[]
+  emTestCases        Em_TestCases[]
 }
 
 model Em_MenuDescription {
@@ -210,6 +215,9 @@ model Em_Tables {
   emColumns    Em_Columns[]
   createdAt    DateTime     @default(now())
   updatedAt    DateTime     @updatedAt
+
+  emMenu       Em_Menus?    @relation(fields: [emMenuId], references: [id])
+  emMenuId     Int?
 }
 
 model Em_Columns {
@@ -229,6 +237,9 @@ model EM_Scripts {
   emScriptInfo String?
   createdAt    DateTime  @default(now())
   updatedAt    DateTime  @updatedAt
+
+  emMenu       Em_Menus?  @relation(fields: [emMenuId], references: [id])
+  emMenuId     Int?
 }
 
 model EM_Bugs {
@@ -243,6 +254,9 @@ model EM_Bugs {
   comments     String?
   createdAt    DateTime?
   updatedAt    DateTime  @updatedAt
+
+  emMenu       Em_Menus?  @relation(fields: [emMenuId], references: [id])
+  emMenuId     Int?
 }
 
 model EM_ReleasedTasks {
@@ -257,7 +271,30 @@ model EM_ReleasedTasks {
   emComments    String?
   createdAt     DateTime?
   updatedAt     DateTime  @updatedAt
+
+  emMenu        Em_Menus?  @relation(fields: [emMenuId], references: [id])
+  emMenuId      Int?
+  }
+
+  model Em_TestCases {
+  id             Int        @id @default(autoincrement())
+  testCaseNo     String?
+  testCaseName   String
+  schemeType     SchemeType?
+  schemeLevel    SchemeLevel
+  module         Module
+  automationStatus AutomationStatus
+  expectedResult String?
+  actualResult   String?
+  comments       String?
+  menuName       String?
+  createdAt      DateTime   @default(now())
+  updatedAt      DateTime   @updatedAt
+
+  emMenu        Em_Menus?  @relation(fields: [emMenuId], references: [id])
+  emMenuId      Int?
 }
+
 
 model RegComments {
   id         String     @id @default(cuid())

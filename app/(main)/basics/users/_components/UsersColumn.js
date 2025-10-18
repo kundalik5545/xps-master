@@ -2,6 +2,7 @@ import {
   TableActions,
   TableActionsHeader,
 } from "@/components/myUi/TableComponents";
+import Link from "next/link";
 
 export const userColumns = ({ onEdit, onDelete, deleting } = {}) => [
   {
@@ -20,6 +21,19 @@ export const userColumns = ({ onEdit, onDelete, deleting } = {}) => [
     enableSorting: true,
     enableHiding: true,
     enableColumnFilter: false,
+    cell: ({ row }) => {
+      const v = row.original.eMemberId;
+      const dbId = row.original.id;
+      if (!v) return <span className="text-muted-foreground">-</span>;
+      return (
+        <Link
+          className="text-blue-600 underline cursor-pointer"
+          href={`/basics/users/${dbId}`}
+        >
+          {v}
+        </Link>
+      );
+    },
   },
   {
     accessorKey: "xpsId",
@@ -79,6 +93,9 @@ export const userColumns = ({ onEdit, onDelete, deleting } = {}) => [
     enableSorting: true,
     enableHiding: true,
     enableColumnFilter: true,
+    meta: {
+      initiallyHidden: true, // Hide by default
+    },
   },
   {
     accessorKey: "xpsSchemeId",
@@ -106,6 +123,9 @@ export const userColumns = ({ onEdit, onDelete, deleting } = {}) => [
     enableSorting: true,
     enableHiding: true,
     enableColumnFilter: false,
+    meta: {
+      initiallyHidden: true, // Hide by default
+    },
   },
   {
     accessorKey: "DOB",
@@ -113,6 +133,9 @@ export const userColumns = ({ onEdit, onDelete, deleting } = {}) => [
     enableSorting: true,
     enableHiding: true,
     enableColumnFilter: false,
+    meta: {
+      initiallyHidden: true, // Hide by default
+    },
     cell: ({ row }) => {
       const v = row.original.DOB;
       if (!v) return <span className="text-muted-foreground">-</span>;
@@ -130,6 +153,9 @@ export const userColumns = ({ onEdit, onDelete, deleting } = {}) => [
     enableSorting: true,
     enableHiding: true,
     enableColumnFilter: false,
+    meta: {
+      initiallyHidden: true, // Hide by default
+    },
     cell: ({ row }) => {
       const v = row.original.addressId;
       if (!v) return <span className="text-muted-foreground">-</span>;
@@ -142,6 +168,9 @@ export const userColumns = ({ onEdit, onDelete, deleting } = {}) => [
     enableSorting: true,
     enableHiding: true,
     enableColumnFilter: false,
+    meta: {
+      initiallyHidden: true, // Hide by default
+    },
     cell: ({ row }) => {
       const v = row.original.postcode;
       if (!v) return <span className="text-muted-foreground">-</span>;

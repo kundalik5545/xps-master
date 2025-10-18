@@ -18,12 +18,12 @@ import {
 import { UserFormSchema } from "@/lib/Schema/FormSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { format } from "date-fns";
-import { Eye } from "lucide-react";
-import { EyeClosed } from "lucide-react";
 import {
   ALargeSmall,
   AtSign,
   CalendarIcon,
+  Eye,
+  EyeClosed,
   Hash,
   LocationEdit,
   LockKeyhole,
@@ -32,27 +32,9 @@ import {
 } from "lucide-react";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { z } from "zod";
 
 export default function UsersForm({ onFormSubmit, editingData }) {
   const [showPassword, setShowPassword] = useState(false);
-
-  const formSchema = z.object({
-    eMemberId: z.coerce.number().optional(),
-    xpsId: z.coerce.number().optional(),
-    userHashId: z.string(),
-    username: z.string(),
-    password: z.string(),
-    memorableWord: z.string(),
-    userStatusId: z.coerce.number().optional(),
-    userEmail: z.string(),
-    DOB: z.date().optional(),
-    niNumber: z.string(),
-    addressId: z.coerce.number().optional(),
-    postcode: z.string(),
-    xpsSchemeId: z.coerce.number().optional(),
-    eMemberSchemeId: z.coerce.number().optional(),
-  });
 
   const form = useForm({
     resolver: zodResolver(UserFormSchema),
