@@ -1,3 +1,4 @@
+"use server";
 import { ApiRes } from "@/lib/ApiResponse";
 import { UserFormSchema, ZodFormValidator } from "@/lib/Schema/FormSchema";
 import STATUS from "@/lib/Statuses";
@@ -15,6 +16,8 @@ const getAllUsers = async () => {
 
 // Add update user
 const addUpdateUser = async ({ payload, actions }) => {
+  console.log("payload", payload);
+  console.log("actions", actions);
   try {
     // zod form data validator
     const parseResult = ZodFormValidator({
@@ -22,10 +25,12 @@ const addUpdateUser = async ({ payload, actions }) => {
       formSchema: UserFormSchema,
     });
 
+    console.log("parseResult", parseResult);
     // Add new entry
     if (actions === "add") {
       const newUser = await prisma.users.create({ data: parseResult.data });
 
+      console.log("newUser", newUser);
       return ApiRes(
         true,
         STATUS.CREATED,

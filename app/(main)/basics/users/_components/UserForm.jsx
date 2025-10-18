@@ -15,6 +15,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
+import { UserFormSchema } from "@/lib/Schema/FormSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { format } from "date-fns";
 import { Eye } from "lucide-react";
@@ -54,7 +55,7 @@ export default function UsersForm({ onFormSubmit, editingData }) {
   });
 
   const form = useForm({
-    resolver: zodResolver(formSchema),
+    resolver: zodResolver(UserFormSchema),
     defaultValues: editingData || {
       eMemberId: 0,
       xpsId: 0,
