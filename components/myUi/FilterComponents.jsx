@@ -38,7 +38,7 @@ const InputFilter = ({ column, placeholder = "Search..." }) => {
   const value = column?.getFilterValue() || "";
 
   return (
-    <div className="relative max-w-fit md:max-w-[240px]">
+    <div className="relative max-w-fit md:max-w-[250px]">
       <div className="absolute inset-y-0 left-0 flex items-center pl-2 pointer-events-none">
         <Funnel className="w-4 h-4 text-muted-foreground" />
       </div>

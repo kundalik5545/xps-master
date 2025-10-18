@@ -17,9 +17,9 @@ const UsersFilter = ({
     <div className="grid sm:grid-cols-1 lg:grid-cols-2 items-center gap-4 mb-2">
       {/* Left side: filters */}
       <div className="flex flex-col gap-2">
-        <div className="flex items-center gap-2">
+        <div className="flex flex-col md:flex-row md:items-center gap-2">
           <InputFilter
-            column={table.getColumn("userame")}
+            column={table.getColumn("username")}
             placeholder="Search by user name"
           />
 
@@ -34,7 +34,7 @@ const UsersFilter = ({
           />
         </div>
 
-        <div className="flex items-center gap-2">
+        <div className="flex flex-col md:flex-row md:items-center  gap-2">
           <InputFilter
             column={table.getColumn("userHashId")}
             placeholder="Search by user hash id"
@@ -47,7 +47,7 @@ const UsersFilter = ({
 
           <InputFilter
             column={table.getColumn("eMemberSchemeId")}
-            placeholder="Search by eMember scheme id"
+            placeholder="Search by EM scheme id"
           />
         </div>
       </div>

@@ -139,8 +139,6 @@ const ColumnHeaderRows = ({
 };
 
 const RowActions = ({ record, onEdit, onDelete, deleting }) => {
-  if (!deleting) return toast.error("Please Provide deleting function ...");
-
   return (
     <div className="flex items-center justify-end gap-2">
       {onEdit && (

@@ -1,21 +1,6 @@
 "use client";
-
-import { zodResolver } from "@hookform/resolvers/zod";
-import {
-  Calendar,
-  Eye,
-  EyeClosed,
-  Hash,
-  Link,
-  LockKeyhole,
-  Mail,
-  User,
-} from "lucide-react";
-import { useState } from "react";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
-
 import { Button } from "@/components/ui/button";
+import { Calendar } from "@/components/ui/calendar";
 import {
   Form,
   FormControl,
@@ -25,77 +10,71 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { UserFormSchema } from "@/lib/Schema/FormSchema";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { format } from "date-fns";
+import { Eye } from "lucide-react";
+import { EyeClosed } from "lucide-react";
+import {
+  ALargeSmall,
+  AtSign,
+  CalendarIcon,
+  Hash,
+  LocationEdit,
+  LockKeyhole,
+  MailPlus,
+  User,
+} from "lucide-react";
+import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
 
-/**
- * User form for Prisma User model fields:
- * eMemberId      Int?      @unique
- * xpsId          Int?      @unique
- * userHashId     String?   @unique
- * username       String?
- * password       String?
- * memorableWord  String?
- * userStatusId   Int?
- * userEmail      String?
- * DOB            DateTime?
- * niNumber       String?   @unique
- * addressId      Int?
- * postcode       String?
- * xpsSchemeId    Int?
- * eMemberSchemeId Int?
- *
- * Behavior / validation choices (reasonable defaults):
- * - All fields optional (matching ?), but if provided must satisfy format checks:
- *   - eMemberId, xpsId, xpsSchemeId, eMemberSchemeId, userStatusId -> optional positive ints
- *   - userEmail -> optional email format
- *   - niNumber -> optional, if provided must match UK NI pattern AA123456A (9 chars)
- *   - DOB -> optional date (ISO string)
- *   - password -> optional but min length 6 if provided
- *   - userHashId -> optional string with min 6 chars
- *
- * Adjust validation rules to your project's requirements if you need stricter rules.
- */
-
-export default function UserForm({ onFormSubmit, editingData }) {
+export default function UsersForm({ onFormSubmit, editingData }) {
   const [showPassword, setShowPassword] = useState(false);
 
+  const formSchema = z.object({
+    eMemberId: z.coerce.number().optional(),
+    xpsId: z.coerce.number().optional(),
+    userHashId: z.string(),
+    username: z.string(),
+    password: z.string(),
+    memorableWord: z.string(),
+    userStatusId: z.coerce.number().optional(),
+    userEmail: z.string(),
+    DOB: z.date().optional(),
+    niNumber: z.string(),
+    addressId: z.coerce.number().optional(),
+    postcode: z.string(),
+    xpsSchemeId: z.coerce.number().optional(),
+    eMemberSchemeId: z.coerce.number().optional(),
+  });
+
   const form = useForm({
-    resolver: zodResolver(UserFormSchema),
+    resolver: zodResolver(formSchema),
     defaultValues: editingData || {
-      eMemberId: "",
-      xpsId: "",
+      eMemberId: 0,
+      xpsId: 0,
       userHashId: "",
       username: "",
       password: "",
       memorableWord: "",
-      userStatusId: "",
+      userStatusId: 0,
       userEmail: "",
       DOB: "",
       niNumber: "",
-      addressId: "",
+      addressId: 0,
       postcode: "",
-      xpsSchemeId: "",
-      eMemberSchemeId: "",
+      xpsSchemeId: 0,
+      eMemberSchemeId: 0,
     },
   });
 
   function onSubmit(values) {
-    // convert integer-like string fields to numbers if present
-    const normalized = {
-      ...values,
-      eMemberId: values.eMemberId === "" ? null : Number(values.eMemberId),
-      xpsId: values.xpsId === "" ? null : Number(values.xpsId),
-      xpsSchemeId:
-        values.xpsSchemeId === "" ? null : Number(values.xpsSchemeId),
-      eMemberSchemeId:
-        values.eMemberSchemeId === "" ? null : Number(values.eMemberSchemeId),
-      userStatusId:
-        values.userStatusId === "" ? null : Number(values.userStatusId),
-      addressId: values.addressId === "" ? null : Number(values.addressId),
-      DOB: values.DOB === "" ? null : new Date(values.DOB).toISOString(),
-    };
-
-    onFormSubmit(normalized);
+    onFormSubmit(values);
   }
 
   function onReset() {
@@ -111,134 +90,167 @@ export default function UserForm({ onFormSubmit, editingData }) {
         className="space-y-8 @container"
       >
         <div className="grid grid-cols-12 gap-4">
-          {/* eMemberId */}
           <FormField
             control={form.control}
             name="eMemberId"
             render={({ field }) => (
-              <FormItem className="col-span-6 flex flex-col gap-2">
-                <FormLabel>EMember ID</FormLabel>
+              <FormItem className="col-span-12 @3xl:col-span-6 col-start-auto flex self-end flex-col gap-2 space-y-0 items-start">
+                <FormLabel className="flex shrink-0">EMember ID</FormLabel>
+
                 <div className="w-full">
                   <FormControl>
                     <div className="relative w-full">
                       <Input
-                        placeholder="Enter eMemberId (optional)"
+                        key="number-input-0"
+                        placeholder="Enter EMember ID (Optional)"
+                        type="number"
                         id="eMemberId"
+                        className=" ps-9"
                         {...field}
-                        className="ps-9"
                       />
-                      <div className="text-muted-foreground pointer-events-none absolute inset-y-0 start-0 ps-3 flex items-center">
+                      <div
+                        className={
+                          "text-muted-foreground pointer-events-none absolute inset-y-0 flex items-center justify-center  peer-disabled:opacity-50 start-0 ps-3"
+                        }
+                      >
                         <Hash className="size-4" strokeWidth={2} />
                       </div>
                     </div>
                   </FormControl>
+
                   <FormMessage />
                 </div>
               </FormItem>
             )}
           />
-
-          {/* xpsId */}
           <FormField
             control={form.control}
             name="xpsId"
             render={({ field }) => (
-              <FormItem className="col-span-6 flex flex-col gap-2">
-                <FormLabel>XPS ID</FormLabel>
+              <FormItem className="col-span-12 @3xl:col-span-6 col-start-auto flex self-end flex-col gap-2 space-y-0 items-start">
+                <FormLabel className="flex shrink-0">XPS ID</FormLabel>
+
                 <div className="w-full">
                   <FormControl>
                     <div className="relative w-full">
                       <Input
-                        placeholder="Enter xpsId (optional)"
+                        key="number-input-1"
+                        placeholder="Enter XPS ID (Optional)"
+                        type="number"
                         id="xpsId"
+                        className=" ps-9"
                         {...field}
-                        className="ps-9"
                       />
-                      <div className="text-muted-foreground pointer-events-none absolute inset-y-0 start-0 ps-3 flex items-center">
+                      <div
+                        className={
+                          "text-muted-foreground pointer-events-none absolute inset-y-0 flex items-center justify-center  peer-disabled:opacity-50 start-0 ps-3"
+                        }
+                      >
                         <Hash className="size-4" strokeWidth={2} />
                       </div>
                     </div>
                   </FormControl>
+
                   <FormMessage />
                 </div>
               </FormItem>
             )}
           />
-
-          {/* userHashId */}
           <FormField
             control={form.control}
             name="userHashId"
             render={({ field }) => (
-              <FormItem className="col-span-12 flex flex-col gap-2">
-                <FormLabel>User Hash ID</FormLabel>
+              <FormItem className="col-span-12 col-start-auto flex self-end flex-col gap-2 space-y-0 items-start">
+                <FormLabel className="flex shrink-0">User Hash Id</FormLabel>
+
                 <div className="w-full">
                   <FormControl>
                     <div className="relative w-full">
                       <Input
-                        placeholder="Enter userHashId (optional)"
+                        key="text-input-0"
+                        placeholder="Enter User Hash ID (Optional)"
+                        type="text"
                         id="userHashId"
+                        className=" ps-9"
                         {...field}
-                        className="ps-9"
                       />
-                      <div className="text-muted-foreground pointer-events-none absolute inset-y-0 start-0 ps-3 flex items-center">
-                        <LockKeyhole className="size-4" strokeWidth={2} />
+                      <div
+                        className={
+                          "text-muted-foreground pointer-events-none absolute inset-y-0 flex items-center justify-center  peer-disabled:opacity-50 start-0 ps-3"
+                        }
+                      >
+                        <Hash className="size-4" strokeWidth={2} />
                       </div>
                     </div>
                   </FormControl>
+
                   <FormMessage />
                 </div>
               </FormItem>
             )}
           />
-
-          {/* userName */}
           <FormField
             control={form.control}
             name="username"
             render={({ field }) => (
-              <FormItem className="col-span-6 flex flex-col gap-2">
-                <FormLabel>User Name</FormLabel>
+              <FormItem className="col-span-12 @3xl:col-span-6 col-start-auto flex self-end flex-col gap-2 space-y-0 items-start">
+                <FormLabel className="flex shrink-0">User Name</FormLabel>
+
                 <div className="w-full">
                   <FormControl>
                     <div className="relative w-full">
                       <Input
-                        placeholder="Enter userName (optional)"
+                        key="text-input-1"
+                        placeholder="Enter Username (Optional)"
+                        type="text"
                         id="username"
+                        className=" ps-9"
                         {...field}
-                        className="ps-9"
                       />
-                      <div className="text-muted-foreground pointer-events-none absolute inset-y-0 start-0 ps-3 flex items-center">
+                      <div
+                        className={
+                          "text-muted-foreground pointer-events-none absolute inset-y-0 flex items-center justify-center  peer-disabled:opacity-50 start-0 ps-3"
+                        }
+                      >
                         <User className="size-4" strokeWidth={2} />
                       </div>
                     </div>
                   </FormControl>
+
                   <FormMessage />
                 </div>
               </FormItem>
             )}
           />
 
-          {/* password */}
+          {/* Password Field */}
           <FormField
             control={form.control}
             name="password"
             render={({ field }) => (
-              <FormItem className="col-span-6 flex flex-col gap-2">
-                <FormLabel>Password</FormLabel>
+              <FormItem className="col-span-12 @3xl:col-span-6 col-start-auto flex self-end flex-col gap-2 space-y-0 items-start">
+                <FormLabel className="flex shrink-0">Password</FormLabel>
+
                 <div className="w-full">
                   <FormControl>
                     <div className="relative w-full">
-                      <div className="text-muted-foreground pointer-events-none absolute inset-y-0 start-0 ps-3 flex items-center">
+                      {/* Lock icon at the start */}
+                      <div
+                        className={
+                          "text-muted-foreground pointer-events-none absolute inset-y-0 flex items-center justify-center peer-disabled:opacity-50 start-0 ps-3"
+                        }
+                      >
                         <LockKeyhole className="size-4" strokeWidth={2} />
                       </div>
                       <Input
-                        placeholder="Enter Password (optional)"
-                        id="password"
+                        key="password-input-0"
+                        placeholder="Enter Password (Optional)"
                         type={showPassword ? "text" : "password"}
-                        {...field}
+                        id="password"
                         className="ps-9 pr-10"
+                        {...field}
                       />
+                      {/* Eye icon at the end */}
                       <button
                         type="button"
                         tabIndex={-1}
@@ -256,188 +268,359 @@ export default function UserForm({ onFormSubmit, editingData }) {
                       </button>
                     </div>
                   </FormControl>
+
                   <FormMessage />
                 </div>
               </FormItem>
             )}
           />
 
-          {/* memorableWord */}
           <FormField
             control={form.control}
             name="memorableWord"
             render={({ field }) => (
-              <FormItem className="col-span-12 flex flex-col gap-2">
-                <FormLabel>Memorable Word</FormLabel>
+              <FormItem className="col-span-12 @3xl:col-span-6 col-start-auto flex self-end flex-col gap-2 space-y-0 items-start">
+                <FormLabel className="flex shrink-0">Memorable Word</FormLabel>
+
                 <div className="w-full">
                   <FormControl>
-                    <Input
-                      placeholder="Enter memorable word (optional)"
-                      id="memorableWord"
-                      {...field}
-                    />
+                    <div className="relative w-full">
+                      <Input
+                        key="text-input-3"
+                        placeholder="Enter Memorable Word (Optional)"
+                        type="text"
+                        id="memorableWord"
+                        className=" ps-9"
+                        {...field}
+                      />
+                      <div
+                        className={
+                          "text-muted-foreground pointer-events-none absolute inset-y-0 flex items-center justify-center  peer-disabled:opacity-50 start-0 ps-3"
+                        }
+                      >
+                        <ALargeSmall className="size-4" strokeWidth={2} />
+                      </div>
+                    </div>
                   </FormControl>
+
                   <FormMessage />
                 </div>
               </FormItem>
             )}
           />
-
-          {/* userStatusId */}
           <FormField
             control={form.control}
             name="userStatusId"
             render={({ field }) => (
-              <FormItem className="col-span-6 flex flex-col gap-2">
-                <FormLabel>User Status ID</FormLabel>
+              <FormItem className="col-span-12 @3xl:col-span-6 col-start-auto flex self-end flex-col gap-2 space-y-0 items-start">
+                <FormLabel className="flex shrink-0">User Status Id</FormLabel>
+
                 <div className="w-full">
                   <FormControl>
-                    <Input
-                      placeholder="Enter userStatusId (optional)"
-                      id="userStatusId"
-                      {...field}
-                    />
+                    <div className="relative w-full">
+                      <Input
+                        key="number-input-2"
+                        placeholder="Enter User Status ID (Optional)"
+                        type="number"
+                        id="userStatusId"
+                        className=" ps-9"
+                        {...field}
+                      />
+                      <div
+                        className={
+                          "text-muted-foreground pointer-events-none absolute inset-y-0 flex items-center justify-center  peer-disabled:opacity-50 start-0 ps-3"
+                        }
+                      >
+                        <Hash className="size-4" strokeWidth={2} />
+                      </div>
+                    </div>
                   </FormControl>
+
                   <FormMessage />
                 </div>
               </FormItem>
             )}
           />
-
-          {/* userEmail */}
           <FormField
             control={form.control}
             name="userEmail"
             render={({ field }) => (
-              <FormItem className="col-span-12 flex flex-col gap-2">
-                <FormLabel>User Email</FormLabel>
+              <FormItem className="col-span-12 col-start-auto flex self-end flex-col gap-2 space-y-0 items-start">
+                <FormLabel className="flex shrink-0">User Email</FormLabel>
+
                 <div className="w-full">
                   <FormControl>
                     <div className="relative w-full">
                       <Input
-                        placeholder="Enter email (optional)"
+                        key="email-input-0"
+                        placeholder="Enter User EMail (Optional)"
+                        type="email"
                         id="userEmail"
+                        className=" ps-9"
                         {...field}
-                        className="ps-9"
                       />
-                      <div className="text-muted-foreground pointer-events-none absolute inset-y-0 start-0 ps-3 flex items-center">
-                        <Mail className="size-4" strokeWidth={2} />
+                      <div
+                        className={
+                          "text-muted-foreground pointer-events-none absolute inset-y-0 flex items-center justify-center  peer-disabled:opacity-50 start-0 ps-3"
+                        }
+                      >
+                        <MailPlus className="size-4" strokeWidth={2} />
                       </div>
                     </div>
                   </FormControl>
+
                   <FormMessage />
                 </div>
               </FormItem>
             )}
           />
-
-          {/* dob */}
           <FormField
             control={form.control}
             name="DOB"
             render={({ field }) => (
-              <FormItem className="col-span-6 flex flex-col gap-2">
-                <FormLabel>Date of Birth</FormLabel>
+              <FormItem className="col-span-12 col-start-auto flex self-end flex-col gap-2 space-y-0 items-start">
+                <FormLabel className="flex shrink-0">Date Of Birth</FormLabel>
+
                 <div className="w-full">
                   <FormControl>
-                    <div className="relative">
-                      <Input
-                        placeholder="YYYY-MM-DD (optional)"
-                        id="DOB"
-                        type="date"
-                        {...field}
-                      />
-                      <div className="text-muted-foreground pointer-events-none absolute inset-y-0 start-0 ps-3 flex items-center">
-                        <Calendar className="size-4" strokeWidth={2} />
-                      </div>
-                    </div>
+                    <Popover>
+                      <PopoverTrigger asChild>
+                        <Button
+                          variant={"outline"}
+                          className="justify-start text-left font-normal w-full"
+                          id="DOB"
+                          name="DOB"
+                        >
+                          <CalendarIcon className="mr-2 h-4 w-4" />
+                          {field.value ? (
+                            format(field.value, "PPP")
+                          ) : (
+                            <span className="text-muted-foreground">
+                              Pick a date
+                            </span>
+                          )}
+                        </Button>
+                      </PopoverTrigger>
+                      <PopoverContent className="w-auto p-0">
+                        <Calendar
+                          mode="single"
+                          initialFocus
+                          onSelect={field.onChange}
+                        />
+                      </PopoverContent>
+                    </Popover>
                   </FormControl>
+
                   <FormMessage />
                 </div>
               </FormItem>
             )}
           />
-
-          {/* niNumber */}
           <FormField
             control={form.control}
             name="niNumber"
             render={({ field }) => (
-              <FormItem className="col-span-6 flex flex-col gap-2">
-                <FormLabel>NI Number</FormLabel>
+              <FormItem className="col-span-12 @3xl:col-span-4 col-start-auto flex self-end flex-col gap-2 space-y-0 items-start">
+                <FormLabel className="flex shrink-0">Ni Number</FormLabel>
+
                 <div className="w-full">
                   <FormControl>
                     <div className="relative w-full">
                       <Input
-                        placeholder="AA123456A (optional)"
+                        key="text-input-4"
+                        placeholder="Enter NI Number (Optional)"
+                        type="text"
                         id="niNumber"
+                        className=" ps-9"
                         {...field}
-                        className="ps-9"
                       />
-                      <div className="text-muted-foreground pointer-events-none absolute inset-y-0 start-0 ps-3 flex items-center">
-                        <Link className="size-4" strokeWidth={2} />
+                      <div
+                        className={
+                          "text-muted-foreground pointer-events-none absolute inset-y-0 flex items-center justify-center  peer-disabled:opacity-50 start-0 ps-3"
+                        }
+                      >
+                        <AtSign className="size-4" strokeWidth={2} />
                       </div>
                     </div>
                   </FormControl>
+
                   <FormMessage />
                 </div>
               </FormItem>
             )}
           />
+          <FormField
+            control={form.control}
+            name="addressId"
+            render={({ field }) => (
+              <FormItem className="col-span-12 @3xl:col-span-4 col-start-auto flex self-end flex-col gap-2 space-y-0 items-start">
+                <FormLabel className="flex shrink-0">Address Id</FormLabel>
 
-          {/* xpsSchemeId */}
+                <div className="w-full">
+                  <FormControl>
+                    <div className="relative w-full">
+                      <Input
+                        key="number-input-3"
+                        placeholder="Enter Address ID (Optional)"
+                        type="number"
+                        id="addressId"
+                        className=" ps-9"
+                        {...field}
+                      />
+                      <div
+                        className={
+                          "text-muted-foreground pointer-events-none absolute inset-y-0 flex items-center justify-center  peer-disabled:opacity-50 start-0 ps-3"
+                        }
+                      >
+                        <LocationEdit className="size-4" strokeWidth={2} />
+                      </div>
+                    </div>
+                  </FormControl>
+
+                  <FormMessage />
+                </div>
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="postcode"
+            render={({ field }) => (
+              <FormItem className="col-span-12 @3xl:col-span-4 col-start-auto flex self-end flex-col gap-2 space-y-0 items-start">
+                <FormLabel className="flex shrink-0">Postcode</FormLabel>
+
+                <div className="w-full">
+                  <FormControl>
+                    <div className="relative w-full">
+                      <Input
+                        key="text-input-5"
+                        placeholder="Enter Postcode (Optional)"
+                        type="text"
+                        id="postcode"
+                        className=" ps-9"
+                        {...field}
+                      />
+                      <div
+                        className={
+                          "text-muted-foreground pointer-events-none absolute inset-y-0 flex items-center justify-center  peer-disabled:opacity-50 start-0 ps-3"
+                        }
+                      >
+                        <LocationEdit className="size-4" strokeWidth={2} />
+                      </div>
+                    </div>
+                  </FormControl>
+
+                  <FormMessage />
+                </div>
+              </FormItem>
+            )}
+          />
           <FormField
             control={form.control}
             name="xpsSchemeId"
             render={({ field }) => (
-              <FormItem className="col-span-4 flex flex-col gap-2">
-                <FormLabel>XPS Scheme ID</FormLabel>
+              <FormItem className="col-span-12 @3xl:col-span-6 col-start-auto flex self-end flex-col gap-2 space-y-0 items-start">
+                <FormLabel className="flex shrink-0">XPS Scheme Id</FormLabel>
+
                 <div className="w-full">
                   <FormControl>
-                    <Input
-                      placeholder="xpsSchemeId (opt.)"
-                      id="xpsSchemeId"
-                      {...field}
-                    />
+                    <div className="relative w-full">
+                      <Input
+                        key="number-input-4"
+                        placeholder="Enter XPS Scheme ID (Optional)"
+                        type="number"
+                        id="xpsSchemeId"
+                        className=" "
+                        {...field}
+                      />
+                    </div>
                   </FormControl>
+
                   <FormMessage />
                 </div>
               </FormItem>
             )}
           />
-
-          {/* eMemberSchemeId */}
           <FormField
             control={form.control}
             name="eMemberSchemeId"
             render={({ field }) => (
-              <FormItem className="col-span-4 flex flex-col gap-2">
-                <FormLabel>EMember Scheme ID</FormLabel>
+              <FormItem className="col-span-12 @3xl:col-span-6 col-start-auto flex self-end flex-col gap-2 space-y-0 items-start">
+                <FormLabel className="flex shrink-0">
+                  eMember Scheme Id
+                </FormLabel>
+
                 <div className="w-full">
                   <FormControl>
-                    <Input
-                      placeholder="eMemberSchemeId (opt.)"
-                      id="eMemberSchemeId"
-                      {...field}
-                    />
+                    <div className="relative w-full">
+                      <Input
+                        key="number-input-5"
+                        placeholder="Enter EMember Scheme ID (Optional)"
+                        type="number"
+                        id="eMemberSchemeId"
+                        className=" "
+                        {...field}
+                      />
+                    </div>
                   </FormControl>
+
                   <FormMessage />
                 </div>
               </FormItem>
             )}
           />
+          <FormField
+            control={form.control}
+            name="reset-button-0"
+            render={({ field }) => (
+              <FormItem className="col-span-12 @5xl:col-span-6 col-start-auto flex self-end flex-col gap-2 space-y-0 items-start">
+                <FormLabel className="hidden shrink-0">Reset</FormLabel>
 
-          {/* Buttons */}
-          <div className="col-span-6">
-            <Button type="reset" variant="outline" className="w-full">
-              Reset
-            </Button>
-          </div>
-          <div className="col-span-6">
-            <Button type="submit" className="w-full">
-              Submit
-            </Button>
-          </div>
+                <div className="w-full">
+                  <FormControl>
+                    <Button
+                      key="reset-button-0"
+                      id="reset-button-0"
+                      name=""
+                      className="w-full"
+                      type="reset"
+                      variant="outline"
+                    >
+                      Reset
+                    </Button>
+                  </FormControl>
+
+                  <FormMessage />
+                </div>
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="submit-button-0"
+            render={({ field }) => (
+              <FormItem className="col-span-12 @5xl:col-span-6 col-start-auto flex self-end flex-col gap-2 space-y-0 items-start">
+                <FormLabel className="hidden shrink-0">Submit</FormLabel>
+
+                <div className="w-full">
+                  <FormControl>
+                    <Button
+                      key="submit-button-0"
+                      id="submit-button-0"
+                      name=""
+                      className="w-full"
+                      type="submit"
+                      variant="default"
+                    >
+                      Submit
+                    </Button>
+                  </FormControl>
+
+                  <FormMessage />
+                </div>
+              </FormItem>
+            )}
+          />
         </div>
       </form>
     </Form>
