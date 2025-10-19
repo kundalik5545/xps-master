@@ -11,7 +11,6 @@ const getXpsTables = async () => {
     const xpsTables = await prisma.xpsTables.findMany();
     return ApiRes(true, STATUS.OK, "Xps tables fetched.", xpsTables);
   } catch (error) {
-    console.log("error in getXpsTables", error);
     return ApiRes(false, STATUS.ERROR, error.message);
   }
 };
@@ -27,7 +26,6 @@ const getXpsTableById = async (id) => {
     });
     return ApiRes(true, STATUS.OK, "Xps table fetched.", xpsTable);
   } catch (error) {
-    console.log("error in getXpsTableById", error);
     return ApiRes(false, STATUS.ERROR, error.message);
   }
 };
