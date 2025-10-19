@@ -2,6 +2,7 @@ import {
   TableActions,
   TableActionsHeader,
 } from "@/components/myUi/TableComponents";
+import Link from "next/link";
 
 export const xpsTCColumns = ({ onEdit, onDelete }) => [
   {
@@ -10,6 +11,17 @@ export const xpsTCColumns = ({ onEdit, onDelete }) => [
     enableSorting: true,
     enableHiding: true,
     enableColumnFilter: true,
+    cell: ({ row }) => {
+      const record = row.original;
+      return (
+        <Link
+          href={`/xps/test-cases/${record.id}`}
+          className="text-blue-600 underline cursor-pointer"
+        >
+          {record.testCaseNo}
+        </Link>
+      );
+    },
   },
   {
     accessorKey: "testCaseName",
