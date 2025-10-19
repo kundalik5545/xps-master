@@ -6,11 +6,13 @@ import STATUS from "@/lib/Statuses";
 
 // get all xps menus
 const getXpsMenus = async () => {
+  console.log("getXpsMenus called");
   try {
     const xpsMenus = await prisma.xpsMenus.findMany();
-
+    console.log("backend xps menus", xpsMenus);
     return ApiRes(true, STATUS.OK, "Xps menus fetched.", xpsMenus);
-  } catch (error) { 
+  } catch (error) {
+    console.log("error in getXpsMenus", error);
     return ApiRes(false, STATUS.ERROR, error.message);
   }
 };
