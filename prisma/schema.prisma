@@ -93,8 +93,7 @@ model XpsTestCases {
   automationStatus AutomationStatus
   expectedResult String?
   actualResult   String?
-  comments       String?
-  menuName       String?
+  comments       String? 
   createdAt      DateTime   @default(now())
   updatedAt      DateTime   @updatedAt
 

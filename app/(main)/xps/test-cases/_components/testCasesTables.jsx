@@ -1,5 +1,6 @@
 "use client";
 import React, { useState } from "react";
+import XpsTCFilter from "./testCasesFilter";
 import {
   getCoreRowModel,
   getFilteredRowModel,
@@ -14,7 +15,6 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import MenuFilter from "./menuFilter";
 import {
   TableHeading,
   TableNoResults,
@@ -23,10 +23,19 @@ import {
 import TablePagination from "@/components/myUi/TablePagination";
 import Loading from "@/app/Loading";
 
-const MenuTables = ({ data, columns, loading }) => {
+const TestCasesTables = ({ data, columns, loading }) => {
   const [sorting, setSorting] = useState([]);
   const [columnFilters, setColumnFilters] = useState([]);
   const [rowSelection, setRowSelection] = useState({});
+  const [columnVisibility, setColumnVisibility] = useState(() => {
+    const initialVisibility = {};
+    columns.forEach((column) => {
+      if (column.meta?.initiallyHidden) {
+        initialVisibility[column.accessorKey || column.id] = false;
+      }
+    });
+    return initialVisibility;
+  });
 
   const table = useReactTable({
     data,
@@ -38,10 +47,15 @@ const MenuTables = ({ data, columns, loading }) => {
     onRowSelectionChange: setRowSelection,
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
+    onColumnVisibilityChange: setColumnVisibility,
     state: {
       sorting,
       columnFilters,
       rowSelection,
+      columnVisibility,
+    },
+    meta: {
+      debounceTime: 200,
     },
   });
 
@@ -56,7 +70,7 @@ const MenuTables = ({ data, columns, loading }) => {
   return (
     <div>
       {/* Table Filters */}
-      <MenuFilter
+      <XpsTCFilter
         table={table}
         rowSelection={rowSelection}
         resetFilters={resetFilters}
@@ -105,4 +119,4 @@ const MenuTables = ({ data, columns, loading }) => {
   );
 };
 
-export default MenuTables;
+export default TestCasesTables;
