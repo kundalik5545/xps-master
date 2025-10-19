@@ -18,7 +18,7 @@ const getEmTableById = async (id) => {
   try {
     const emTable = await prisma.em_Tables.findUnique({
       include: {
-        emMenu: true,
+        emColumns: true,
       },
       where: { id: Number(id) },
     });
