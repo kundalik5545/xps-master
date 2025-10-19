@@ -1,0 +1,97 @@
+XPS Master by JK — Cursor Rules
+
+Context
+
+- Framework: Next.js 15 (App Router) with React 19
+- Styling: Tailwind CSS v4, shadcn-inspired UI in `components/ui`
+- DB/ORM: Prisma 6 → generated client in `generated/prisma`
+- Linting: ESLint 9 flat config extending `next/core-web-vitals`
+- Language: JavaScript (no TypeScript unless explicitly requested)
+- Path alias: `@/*` → prefer absolute imports like `@/components/...`
+
+General Conventions
+
+- Prefer ESM imports/exports across the app. Keep existing CommonJS only where already used (e.g. `db/db.config.js`).
+- Use semicolons and match existing formatting; do not reformat unrelated code.
+- Keep functions/variables descriptive; avoid 1–2 letter names.
+- Avoid adding comments that restate obvious code; only document non-obvious rationale or caveats.
+- Do not introduce new dependencies without discussion.
+
+Next.js (App Router) and React 19
+
+- Components are Server Components by default. Add `"use client"` only when using state, effects, browser APIs, or client-only libraries.
+- For navigation, use `next/link` and `next/navigation` APIs; avoid deprecated router APIs.
+- Co-locate pages in `app/**`; keep route handlers in `app/api/**/route.js`.
+- Prefer Server Actions or API Routes for data mutations instead of calling the DB from client components.
+- Export `metadata` from layouts/pages instead of using `Head`.
+
+Server Actions and Actions Directory
+
+- Place server-only logic in `actions/**` or route handlers; begin files or functions with `"use server"` as needed.
+- Never import server-only modules into client components.
+- Keep action functions small, typed via JSDoc if needed, and return plain JSON-serializable data.
+
+Prisma and Database
+
+- Import the Prisma client from `@/generated/prisma` (config in `prisma/schema.prisma`).
+- Reuse a single PrismaClient instance within the Node runtime; do not create a new instance per request.
+- Do not use Prisma in the Edge runtime.
+- Run `npx prisma generate` when the schema changes (already wired in `prebuild`).
+
+API Patterns
+
+- Use `app/api/**/route.js` with `export async function GET/POST/...`.
+- Validate inputs at the edge using simple guards or `zod` where appropriate.
+- Return consistent shapes using helpers in `lib/ApiResponse.js` when applicable.
+
+Styling and UI
+
+- Use Tailwind v4 utility classes; keep class lists readable and grouped logically.
+- Favor existing primitives in `components/ui/*` and wrappers in `components/myUi/*` instead of adding new UI frameworks.
+- Keep dark mode compatibility (the app uses `next-themes` through `ThemeProvider`).
+
+Imports and Paths
+
+- Prefer absolute imports via `@/` alias instead of long relative paths.
+- Group imports: external libs, then `@/lib`/`@/components`, then local relatives; keep consistent ordering.
+
+Client vs Server Boundaries
+
+- Do not call Prisma or access `process.env` from client components.
+- Only mark files/components `"use client"` when required; minimize client surface area.
+- If a component is mostly server-rendered but needs a small client interaction, isolate the client part into a child component.
+
+Files and Naming
+
+- Use `.jsx` for React components and `.js` for non-React modules (match existing tree).
+- Keep route files as `page.jsx` / `layout.jsx` inside `app/**` and API handlers as `route.js`.
+
+Linting and Formatting
+
+- Follow the ESLint flat config (`eslint.config.mjs`) with `next/core-web-vitals`.
+- Fix linter warnings surfaced by the editor; do not disable rules unless necessary with a brief rationale.
+
+Data Fetching
+
+- Use Server Components or Server Actions for reads by default.
+- For client-side caching/UX, use `swr` in client components, calling API routes (not Prisma directly).
+
+Error Handling and Logs
+
+- Prefer early returns over deep nesting; handle expected errors explicitly.
+- Use `lib/Log.js` if present for structured logs; avoid console noise in production paths.
+
+Testing and Dev UX
+
+- Keep functions pure and small to be testable. Add JSDoc where the intent or types are non-trivial.
+
+Recent Framework Updates — do this now
+
+- React 19: Avoid legacy patterns; no `UNSAFE_*` lifecycles; hooks only at top level.
+- Next 15: App Router is the default; prefer Server Components; use `metadata` export. Server Actions are preferred for mutations.
+- Tailwind v4: No config-heavy utilities; keep classes tidy and deduplicated.
+- ESLint 9 (flat): Use rule-compatible config; do not add `.eslintrc.*`.
+
+When in doubt
+
+- Match existing patterns in adjacent files and keep diffs minimal.
