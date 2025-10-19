@@ -279,15 +279,12 @@ model EM_ReleasedTasks {
   model Em_TestCases {
   id             Int        @id @default(autoincrement())
   testCaseNo     String?
-  testCaseName   String
-  schemeType     SchemeType?
-  schemeLevel    SchemeLevel
-  module         Module
+  testCaseName   String   
+  portalName  PortalName
   automationStatus AutomationStatus
   expectedResult String?
   actualResult   String?
-  comments       String?
-  menuName       String?
+  comments       String? 
   createdAt      DateTime   @default(now())
   updatedAt      DateTime   @updatedAt
 

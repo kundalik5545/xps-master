@@ -20,7 +20,6 @@ import {
   DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
 import { Loader2 } from "lucide-react";
-import { toast } from "sonner";
 
 // Select-all checkbox rendered in the table header
 const HeaderSelectAllCheckbox = ({ table }) => {
@@ -90,7 +89,7 @@ const ColumnHeaderLabel = ({ header }) => {
 };
 
 // Render cell value
-const CellValue = ({ cell }) => {
+const TableRowCellText = ({ cell }) => {
   if (!cell) return null;
 
   return (
@@ -211,7 +210,6 @@ export {
   ColumnHeaderLabel,
   EmptyStateRow,
   RowSelectCheckbox,
-  CellValue,
   ColumnSortButton,
   // Backward-compatible aliases
   RowActions as TableActions,
@@ -221,6 +219,6 @@ export {
   ColumnHeaderLabel as TableHeadingText,
   EmptyStateRow as TableNoResults,
   RowSelectCheckbox as TableRowCellCheckBox,
-  CellValue as TableRowCellText,
+  TableRowCellText,
   ColumnSortButton as TableSortIcon,
 };
