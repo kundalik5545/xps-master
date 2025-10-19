@@ -1,5 +1,6 @@
 "use client";
 import { getXpsTableById } from "@/actions/database/xps_databaseReq";
+import { Button } from "@/components/ui/button";
 import { Spinner } from "@/components/ui/spinner";
 import {
   Table,
@@ -7,8 +8,9 @@ import {
   TableCell,
   TableHead,
   TableHeader,
-  TableRow
+  TableRow,
 } from "@/components/ui/table";
+import { ArrowLeft } from "lucide-react";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
@@ -41,8 +43,21 @@ const XpsColumnsPage = () => {
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead className={"font-bold text-lg text-red-600"}>
-                Column Name
+              <TableHead
+                className={
+                  "font-bold text-lg text-red-600 flex items-center justify-between py-4"
+                }
+              >
+                <span> Column Name</span>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => window.history.back()}
+                  className="ml-10"
+                >
+                  <ArrowLeft className="h-4 w-4" />
+                  Back
+                </Button>
               </TableHead>
             </TableRow>
           </TableHeader>
