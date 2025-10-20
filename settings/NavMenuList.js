@@ -168,8 +168,8 @@ export const mainNavMenu = {
       icon: Frame,
     },
     {
-      name: "Sales & Marketing",
-      url: "#",
+      name: "Todos",
+      url: "/todo",
       icon: PieChart,
     },
     {

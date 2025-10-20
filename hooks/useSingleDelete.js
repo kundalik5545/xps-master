@@ -17,6 +17,7 @@ export function useSingleDelete({ deleteAction, setData } = {}) {
   const [loading, setLoading] = useState(false);
 
   const onDelete = async (id) => {
+    console.log("delete id", id);
     if (!deleteAction) {
       console.error("useSingleDelete: deleteAction is required");
       return;
@@ -34,13 +35,13 @@ export function useSingleDelete({ deleteAction, setData } = {}) {
       if (res && res.success) {
         // remove deleted id from state
         setData((prev) => prev.filter((item) => item.id !== id));
-        toast.success("✅ Deleted successfully");
+        toast.success(res.message || "Deleted successfully");
       } else {
-        const msg = (res && res.message) || "Unknown error";
-        toast.error(`❌ Failed to delete: ${msg}`);
+        console.log("delete todo response is not success", res);
+        toast.error(res.message || "Failed to delete");
       }
     } catch (error) {
-      toast.error(`❌ Unexpected error: ${error?.message || String(error)}`);
+      toast.error(error.message || "Unexpected error");
     } finally {
       setLoading(false);
     }

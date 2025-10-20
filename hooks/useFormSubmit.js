@@ -6,7 +6,7 @@ import { toast } from "sonner";
 export function useFormSubmit({
   formSubmitAction,
   isEditing,
-  editingData, 
+  editingData,
   setData,
   setIsDialogOpen,
   setIsEditing,
@@ -15,8 +15,6 @@ export function useFormSubmit({
   const [loading, setLoading] = useState(false);
 
   const handleFormSubmit = async (formData) => {
-    console.log("isEditing", isEditing);
-
     if (!formSubmitAction) {
       console.error("useFormSubmit: formSubmitAction is required");
       return;
@@ -38,11 +36,11 @@ export function useFormSubmit({
     try {
       const res = await formSubmitAction({ payload, actions });
       if (!res.success) {
-        toast.error(`❌ Failed to submit form: ${res.message}`);
+        toast.error(res.message || "Failed to submit form");
       }
 
       if (res.success) {
-        toast.success(`✅ Form submitted successfully`);
+        toast.success(`${res.message}` || "Form submitted successfully");
         setIsDialogOpen(false);
 
         // Refresh the data
