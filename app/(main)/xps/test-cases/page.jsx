@@ -27,6 +27,7 @@ const XpsTestCasesPage = () => {
         pageDesc="Manage your test cases here"
       />
 
+      {/* Table */}
       <div className="grid grid-cols-1 gap-4 ">
         <TestCasesTables
           data={testCasesData}
