@@ -6,20 +6,12 @@ import {
 } from "@/actions/basics/dailyWork";
 import FormModal from "@/components/myUi/FormModal";
 import PageHeader from "@/components/myUi/PageHeader";
-import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardFooter,
-  CardHeader,
-} from "@/components/ui/card";
+import { Spinner } from "@/components/ui/spinner";
 import useFormSubmit from "@/hooks/useFormSubmit";
 import useSingleDelete from "@/hooks/useSingleDelete";
-import { cn } from "@/lib/utils";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import DWCommentForm from "../_components/DWCommentForm";
-import { Spinner } from "@/components/ui/spinner";
 
 const DWDetailsPage = () => {
   const { id } = useParams();
@@ -33,7 +25,6 @@ const DWDetailsPage = () => {
     setLoading(true);
     const fetchDailyWork = async () => {
       const res = await getDailyTaskCommentsByTaskId(id);
-      console.log("daily res", res);
       setDailyWorkData(res.resData);
       setLoading(false);
     };
@@ -85,6 +76,7 @@ const DWDetailsPage = () => {
             onFormSubmit={handleSubmit}
             editingData={editingData}
             loadingSubmit={loadingSubmit}
+            cdTaskId={id}
           />
         }
       />

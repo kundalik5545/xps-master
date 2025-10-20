@@ -13,15 +13,17 @@ import { DWCommentFormSchema } from "@/lib/Schema/FormSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 
-export default function DWCommentForm({ onFormSubmit, editingData }) {
+export default function DWCommentForm({ onFormSubmit, editingData, cdTaskId }) {
   const form = useForm({
     resolver: zodResolver(DWCommentFormSchema),
     defaultValues: editingData || {
       comments: "",
+      dailyWorkId: Number(cdTaskId),
     },
   });
 
   function onSubmit(values) {
+    console.log("form val", values);
     onFormSubmit(values);
     form.reset();
     form.clearErrors();

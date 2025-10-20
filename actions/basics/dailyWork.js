@@ -138,8 +138,6 @@ const getDailyTaskCommentsByTaskId = async (dailyTaskId) => {
       include: { dailyWorkComments: true },
     });
 
-    console.log("daily comments", dailyComments);
-
     if (!dailyComments) {
       return ApiRes(false, STATUS.NOT_FOUND, "Daily comments not found", null);
     }
@@ -163,11 +161,18 @@ const addUpdateDailyComment = async ({ payload, actions }) => {
       payload,
       formSchema: DWCommentFormSchema,
     });
+    console.log("parse result are", parseResult);
+
+    if (parseResult.success === false) {
+      return ApiRes(false, STATUS.BAD_REQUEST, parseResult.error.message, null);
+    }
 
     if (actions === "add") {
       const newDailyComment = await prisma.dailyWorkComments.create({
         data: parseResult.data,
       });
+
+      console.log("new comment created or not", newDailyComment);
 
       return ApiRes(
         true,
