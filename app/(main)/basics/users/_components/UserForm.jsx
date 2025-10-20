@@ -33,7 +33,11 @@ import {
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 
-export default function UsersForm({ onFormSubmit, editingData }) {
+export default function UsersForm({
+  onFormSubmit,
+  editingData,
+  loadingSubmit,
+}) {
   const [showPassword, setShowPassword] = useState(false);
 
   const form = useForm({

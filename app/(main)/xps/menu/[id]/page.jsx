@@ -1,13 +1,13 @@
 "use client";
-import React, { useEffect, useState } from "react";
-import { useParams } from "next/navigation";
 import { getAllXpeMenuDetailsById } from "@/actions/xps/getXpsReq";
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Badge } from "@/components/ui/badge";
-import XpsUserGuide from "../_components/XpsUserGuide";
-import XpsMenuDesc from "../_components/XpsMenuDesc";
+import { useParams } from "next/navigation";
+import { useEffect, useState } from "react";
+import XpsScripts from "../_components/XpsScripts";
 import XpsTables from "../_components/XpsTables";
+import XpsUserGuide from "../_components/XpsUserGuide";
 
 const SingleMenuPage = () => {
   const { id } = useParams();
@@ -27,8 +27,6 @@ const SingleMenuPage = () => {
 
   // Page details
   const pageTitle = menuDetail?.menuName || "XPS Menu Details";
-
-  console.log("xps menu object has", menuDetail);
 
   return (
     <div>
@@ -86,8 +84,7 @@ const SingleMenuPage = () => {
         <TabsContent value="information">Xps Menu Desc</TabsContent>
         <TabsContent value="scripts">
           <TabsContent value="scripts">
-            {/* <XpsScripts scriptsData={menuDetail} menuId={id} /> */}
-            xps Scripts
+            <XpsScripts scriptsData={menuDetail} menuId={id} />
           </TabsContent>
         </TabsContent>
         <TabsContent value="test-cases">

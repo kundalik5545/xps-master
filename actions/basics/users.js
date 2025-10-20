@@ -101,9 +101,9 @@ const multiDeleteUsers = async (selectedIds) => {
 };
 
 export {
-  getAllUsers,
-  getUserById,
   addUpdateUser,
   deleteUserById,
+  getAllUsers,
+  getUserById,
   multiDeleteUsers,
 };
