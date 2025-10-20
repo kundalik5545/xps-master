@@ -1,19 +1,19 @@
 "use client";
-import PageHeader from "@/components/myUi/PageHeader";
-import React, { useEffect, useState } from "react";
-import UsersTables from "./_components/UsersTables";
-import FormModal from "@/components/myUi/FormModal";
-import UserForm from "./_components/UserForm";
 import {
   addUpdateUser,
-  deleteUser,
+  deleteUserById,
   getAllUsers,
   multiDeleteUsers,
 } from "@/actions/basics/users";
+import FormModal from "@/components/myUi/FormModal";
+import PageHeader from "@/components/myUi/PageHeader";
 import useFormSubmit from "@/hooks/useFormSubmit";
-import useSingleDelete from "@/hooks/useSingleDelete";
 import { useMultiDelete } from "@/hooks/useMultiDelete";
+import useSingleDelete from "@/hooks/useSingleDelete";
+import { useEffect, useState } from "react";
+import UserForm from "./_components/UserForm";
 import { userColumns } from "./_components/UsersColumn";
+import UsersTables from "./_components/UsersTables";
 
 const UsersPage = () => {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
@@ -49,7 +49,7 @@ const UsersPage = () => {
 
   // Delete Portal Data
   const { onDelete, loading: deleting } = useSingleDelete({
-    deleteAction: deleteUser,
+    deleteAction: deleteUserById,
     setData: setUsersData,
   });
 

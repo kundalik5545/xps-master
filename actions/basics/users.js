@@ -39,12 +39,10 @@ const addUpdateUser = async ({ payload, actions }) => {
       formSchema: UserFormSchema,
     });
 
-    console.log("parseResult", parseResult);
     // Add new entry
     if (actions === "add") {
       const newUser = await prisma.users.create({ data: parseResult.data });
 
-      console.log("newUser", newUser);
       return ApiRes(
         true,
         STATUS.CREATED,
@@ -75,7 +73,7 @@ const addUpdateUser = async ({ payload, actions }) => {
 };
 
 // Delete Single user
-const deleteUser = async (deleteId) => {
+const deleteUserById = async (deleteId) => {
   try {
     const user = await prisma.users.delete({ where: { id: deleteId } });
 
@@ -106,6 +104,6 @@ export {
   getAllUsers,
   getUserById,
   addUpdateUser,
-  deleteUser,
+  deleteUserById,
   multiDeleteUsers,
 };

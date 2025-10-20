@@ -292,15 +292,28 @@ model EM_ReleasedTasks {
 }
 
 
-model RegComments {
-  id         String     @id @default(cuid())
-  numId      Int        @unique
+model DailyWork {
+  id         Int     @id @default(autoincrement()) 
   taskId     Int?
-  taskTitle  String?
-  comments   String?
+  taskTitle  String? 
+  taskState  TaskState?
   portalName PortalName? @default(XPS)
+  env        Env?
+  assignedBy AssignedBy?
+  taskURL    String? 
   createdAt  DateTime    @default(now())
   updatedAt  DateTime    @updatedAt
+  dailyWorkComments DailyWorkComments[]
+}
+
+model DailyWorkComments {
+  id         Int     @id @default(autoincrement()) 
+  comments String
+  createdAt  DateTime    @default(now())
+  updatedAt  DateTime    @updatedAt
+
+  dailyWork DailyWork? @relation(fields: [dailyWorkId], references: [id])
+  dailyWorkId Int
 }
 
 model ProposedTask {
