@@ -46,8 +46,6 @@ const addUpdateDailyWork = async ({ payload, actions }) => {
         );
       }
 
-      console.log("newDailyWork", newDailyWork);
-
       return ApiRes(
         true,
         STATUS.CREATED,
@@ -79,8 +77,6 @@ const addUpdateDailyWork = async ({ payload, actions }) => {
           null
         );
       }
-
-      console.log("updatedDailyWork", updatedDailyWork);
 
       return ApiRes(
         true,
@@ -161,7 +157,6 @@ const addUpdateDailyComment = async ({ payload, actions }) => {
       payload,
       formSchema: DWCommentFormSchema,
     });
-    console.log("parse result are", parseResult);
 
     if (parseResult.success === false) {
       return ApiRes(false, STATUS.BAD_REQUEST, parseResult.error.message, null);
@@ -171,8 +166,6 @@ const addUpdateDailyComment = async ({ payload, actions }) => {
       const newDailyComment = await prisma.dailyWorkComments.create({
         data: parseResult.data,
       });
-
-      console.log("new comment created or not", newDailyComment);
 
       return ApiRes(
         true,
