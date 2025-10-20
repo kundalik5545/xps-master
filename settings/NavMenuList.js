@@ -74,6 +74,14 @@ export const mainNavMenu = {
           title: "User Guide",
           url: "/xps/user-guide",
         },
+        {
+          title: "Xps Bugs",
+          url: "/xps/bugs-list",
+        },
+        {
+          title: "Released Task",
+          url: "/xps/released-task",
+        },
       ],
     },
     {
@@ -92,6 +100,14 @@ export const mainNavMenu = {
         {
           title: "User Guide",
           url: "/emember/user-guide",
+        },
+        {
+          title: "eMember Bugs",
+          url: "/emember/bugs-list",
+        },
+        {
+          title: "Released Task",
+          url: "/emember/released-task",
         },
       ],
     },

@@ -3,6 +3,7 @@
 import prisma from "@/db/db.config";
 import { ApiRes } from "@/lib/ApiResponse";
 import STATUS from "@/lib/Statuses";
+import { X } from "lucide-react";
 
 // get all xps menus
 const getXpsMenus = async () => {
@@ -27,4 +28,31 @@ const getXpsUserGuides = async () => {
   }
 };
 
-export { getXpsMenus, getXpsUserGuides };
+// Get all xps Menu and its details based on id
+const getAllXpeMenuDetailsById = async (xpsMenuId) => {
+  console.log("Xps menu id type", typeof xpsMenuId);
+  try {
+    const result = await prisma.xpsMenus.findMany({
+      where: { id: Number(xpsMenuId) },
+      include: {
+        xpsMenuDescriptions: true,
+        xpsUserGuides: true,
+        xpsTables: true,
+        xpsScripts: true,
+        xpsTestCases: true,
+        xpsBugs: true,
+        xpsReleasedTasks: true,
+      },
+    });
+
+    return ApiRes(true, STATUS.OK, "All details fetched.", result);
+  } catch (error) {
+    console.log("Error while geting xps menu details", error);
+    return ApiRes(
+      false,
+      STATUS.INTERNAL_SERVER_ERROR,
+      "Error while fetching the records."
+    );
+  }
+};
+export { getXpsMenus, getXpsUserGuides, getAllXpeMenuDetailsById };

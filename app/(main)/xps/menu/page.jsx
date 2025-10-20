@@ -12,9 +12,7 @@ const XpsMenuPage = () => {
   useEffect(() => {
     const fetchXpsMenuData = async () => {
       setLoading(true);
-      console.log("fetching xps menu data");
       const res = await getXpsMenus();
-      console.log("xps menu data", res);
       setXpsMenuData(res.resData);
       setLoading(false);
     };
