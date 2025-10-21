@@ -3,11 +3,9 @@
 import prisma from "@/db/db.config";
 import { ApiRes } from "@/lib/ApiResponse";
 import STATUS from "@/lib/Statuses";
-import { X } from "lucide-react";
 
 // get all xps menus
 const getXpsMenus = async () => {
-  console.log("getXpsMenus called");
   try {
     const xpsMenus = await prisma.xpsMenus.findMany();
     return ApiRes(true, STATUS.OK, "Xps menus fetched.", xpsMenus);
@@ -30,7 +28,6 @@ const getXpsUserGuides = async () => {
 
 // Get all xps Menu and its details based on id
 const getAllXpeMenuDetailsById = async (xpsMenuId) => {
-  console.log("Xps menu id type", typeof xpsMenuId);
   try {
     const result = await prisma.xpsMenus.findMany({
       where: { id: Number(xpsMenuId) },
