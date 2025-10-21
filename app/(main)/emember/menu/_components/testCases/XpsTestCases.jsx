@@ -1,28 +1,25 @@
 "use client";
 import PageHeader from "@/components/myUi/PageHeader";
 import { useState } from "react";
-import TestCasesTables from "./testCasesTables";
-import xpsTCColumns from "./testCasesColumns";
-const XpsTCPage = ({ tcData, menuId }) => {
+import EmTCTables from "./testCasesTables";
+import emTCColumns from "./testCasesColumns";
+
+const EmTCPage = ({ tcData, menuId }) => {
   const [loading, setLoading] = useState(false);
 
   return (
     <div>
       <PageHeader
-        pageTitle="Test Cases"
-        pageDesc="Manage your test cases here"
+        pageTitle="Emember Test Cases"
+        pageDesc="Manage your emember test cases here"
       />
 
       {/* Table */}
       <div className="grid grid-cols-1 gap-4 ">
-        <TestCasesTables
-          data={tcData}
-          columns={xpsTCColumns({ onEdit: () => {}, onDelete: () => {} })}
-          loading={loading}
-        />
+        <EmTCTables data={tcData} columns={emTCColumns()} loading={loading} />
       </div>
     </div>
   );
 };
 
-export default XpsTCPage;
+export default EmTCPage;

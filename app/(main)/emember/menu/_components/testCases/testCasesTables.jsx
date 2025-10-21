@@ -1,6 +1,5 @@
 "use client";
 import React, { useState } from "react";
-import XpsTCFilter from "./testCasesFilter";
 import {
   getCoreRowModel,
   getFilteredRowModel,
@@ -23,7 +22,7 @@ import {
 import TablePagination from "@/components/myUi/TablePagination";
 import Loading from "@/app/Loading";
 
-const TestCasesTables = ({ data, columns, loading }) => {
+const EmTCTables = ({ data, columns, loading }) => {
   const [sorting, setSorting] = useState([]);
   const [columnFilters, setColumnFilters] = useState([]);
   const [rowSelection, setRowSelection] = useState({});
@@ -106,4 +105,4 @@ const TestCasesTables = ({ data, columns, loading }) => {
   );
 };
 
-export default TestCasesTables;
+export default EmTCTables;

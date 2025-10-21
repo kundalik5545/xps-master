@@ -9,6 +9,7 @@ import EmScripts from "../_components/scripts/EmScripts";
 import EmUserGuide from "../_components/EmUserGuide";
 import EmMenuTables from "../_components/EmMenuTables";
 import emTablesColumns from "@/app/(main)/database/emember-tables/_components/tableColumns";
+import EmTCPage from "../_components/testCases/XpsTestCases";
 
 const SingleMenuPage = () => {
   const { id } = useParams();
@@ -86,8 +87,7 @@ const SingleMenuPage = () => {
           </TabsContent>
         </TabsContent>
         <TabsContent value="test-cases">
-          {/* <XpsTCPage tcData={menuDetail?.xpsTestCases} menuId={id} /> */}
-          test cases
+          <EmTCPage tcData={menuDetail?.emTestCases} menuId={id} />
         </TabsContent>
         <TabsContent value="tables">
           <EmMenuTables emTablesData={menuDetail?.emTables} />

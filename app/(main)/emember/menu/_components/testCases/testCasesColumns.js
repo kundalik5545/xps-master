@@ -4,7 +4,7 @@ import {
 } from "@/components/myUi/TableComponents";
 import Link from "next/link";
 
-export const xpsTCColumns = ({ onEdit, onDelete }) => [
+export const emTCColumns = () => [
   {
     accessorKey: "testCaseNo",
     header: "Test Case No",
@@ -15,7 +15,7 @@ export const xpsTCColumns = ({ onEdit, onDelete }) => [
       const record = row.original;
       return (
         <Link
-          href={`/xps/test-cases/${record.id}`}
+          href={`/emember/test-cases/${record.id}`}
           className="text-blue-600 underline cursor-pointer"
         >
           {record.testCaseNo}
@@ -31,36 +31,22 @@ export const xpsTCColumns = ({ onEdit, onDelete }) => [
     enableColumnFilter: true,
   },
   {
-    accessorKey: "schemeType",
-    header: "schemeType",
-    enableSorting: true,
-    enableHiding: true,
-    enableColumnFilter: true,
-  },
-  {
-    accessorKey: "schemeLevel",
-    header: "schemeLevel",
-    enableSorting: true,
-    enableHiding: true,
-    enableColumnFilter: true,
-  },
-  {
-    accessorKey: "module",
-    header: "module",
+    accessorKey: "portalName",
+    header: "Portal Name",
     enableSorting: true,
     enableHiding: true,
     enableColumnFilter: true,
   },
   {
     accessorKey: "automationStatus",
-    header: "automationStatus",
+    header: "Automation Status",
     enableSorting: true,
     enableHiding: true,
     enableColumnFilter: true,
   },
   {
     accessorKey: "expectedResult",
-    header: "expectedResult",
+    header: "Expected Result",
     enableSorting: true,
     enableHiding: true,
     enableColumnFilter: true,
@@ -70,7 +56,7 @@ export const xpsTCColumns = ({ onEdit, onDelete }) => [
   },
   {
     accessorKey: "actualResult",
-    header: "actualResult",
+    header: "Actual Result",
     enableSorting: true,
     enableHiding: true,
     enableColumnFilter: true,
@@ -80,31 +66,18 @@ export const xpsTCColumns = ({ onEdit, onDelete }) => [
   },
   {
     accessorKey: "comments",
-    header: "comments",
+    header: "Comments",
     enableSorting: true,
     enableHiding: true,
     enableColumnFilter: true,
   },
   {
-    accessorKey: "xpsMenuId",
-    header: "xpsMenuId",
+    accessorKey: "emMenuId",
+    header: "Em Menu Id",
     enableSorting: true,
     enableHiding: true,
     enableColumnFilter: true,
-  },
-  {
-    id: "actions",
-    header: () => <TableActionsHeader />,
-    enableSorting: false,
-    enableHiding: false,
-    enableColumnFilter: false,
-    cell: ({ row }) => {
-      const record = row.original;
-      return (
-        <TableActions record={record} onEdit={onEdit} onDelete={onDelete} />
-      );
-    },
   },
 ];
 
-export default xpsTCColumns;
+export default emTCColumns;
