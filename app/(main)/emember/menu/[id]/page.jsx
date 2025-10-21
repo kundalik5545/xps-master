@@ -29,8 +29,6 @@ const SingleMenuPage = () => {
 
   // Page details
   const pageTitle = menuDetail?.emMenuName || "Emember Menu Details";
-
-  console.log("menuDetail is", menuDetail);
   return (
     <div>
       {/* Page Heading */}
