@@ -74,6 +74,9 @@ export const xpsBugsColumns = ({ onEdit, onDelete }) => [
     enableSorting: false,
     enableHiding: true,
     enableColumnFilter: false,
+    meta: {
+      initiallyHidden: true, // Hide by default
+    },
   },
   {
     id: "actions",

@@ -1,7 +1,7 @@
 "use client";
 import PageHeader from "@/components/myUi/PageHeader";
 import React, { useEffect, useState } from "react";
-import XpsBugsTable from "./_components/Tables";
+import XpsBugsTable from "./_components/xpsBugTables";
 import xpsBugsColumns from "./_components/xpsBugColumn";
 import useSingleDelete from "@/hooks/useSingleDelete";
 import {
@@ -10,6 +10,8 @@ import {
   getAllXpsBugs,
 } from "@/actions/xps/xpsBugs";
 import useFormSubmit from "@/hooks/useFormSubmit";
+import XpsBugForm from "./_components/xpsBugForm";
+import FormModal from "@/components/myUi/FormModal";
 
 const XpsBugsPage = () => {
   const [bugsData, setBugsData] = useState([]);
@@ -56,7 +58,7 @@ const XpsBugsPage = () => {
       <PageHeader
         pageTitle="Xps Bugs List"
         pageDesc="Manage your xps bugs list here"
-        addButtonText="Add Bug"
+        buttonText="Add Bug"
         setIsDialogOpen={setIsDialogOpen}
         setIsEditing={setIsEditing}
       />
@@ -69,6 +71,20 @@ const XpsBugsPage = () => {
           loading={loading}
         />
       </div>
+
+      {/* Xps Bug Form */}
+      <FormModal
+        isDialogOpen={isDialogOpen}
+        setIsDialogOpen={setIsDialogOpen}
+        isEditing={isEditing}
+        myForm={
+          <XpsBugForm
+            onFormSubmit={handleSubmit}
+            editingData={editingData}
+            loadingSubmit={loadingSubmit}
+          />
+        }
+      />
     </div>
   );
 };

@@ -3,6 +3,7 @@ import {
   InputFilter,
   SelectFilter,
 } from "@/components/myUi/FilterComponents";
+import { TableColVisibilitySelect } from "@/components/myUi/TableComponents";
 import { cn } from "@/lib/utils";
 
 const XpsBugsFilter = ({ table, rowSelection, resetFilters }) => {
@@ -59,7 +60,15 @@ const XpsBugsFilter = ({ table, rowSelection, resetFilters }) => {
       <div
         className={cn("flex items-center", rowSelection ? "gap-2" : "gap-0")}
       >
-        <FilterReset resetFilters={resetFilters} />
+        {/* Hide show columns */}
+        <TableColVisibilitySelect table={table} />
+
+        {/* Right side: actions */}
+        <div
+          className={cn("flex items-center", rowSelection ? "gap-2" : "gap-0")}
+        >
+          <FilterReset resetFilters={resetFilters} />
+        </div>
       </div>
     </div>
   );

@@ -22,7 +22,11 @@ import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { XpsBugFormSchema } from "@/lib/Schema/FormSchema";
 
-export default function XpsBugForm({ onFormSubmit, editingData }) {
+export default function XpsBugForm({
+  onFormSubmit,
+  editingData,
+  loadingSubmit,
+}) {
   const form = useForm({
     resolver: zodResolver(XpsBugFormSchema),
     defaultValues: editingData || {
@@ -400,6 +404,7 @@ export default function XpsBugForm({ onFormSubmit, editingData }) {
               </FormItem>
             )}
           />
+
           <FormField
             control={form.control}
             name="submit-button-0"
