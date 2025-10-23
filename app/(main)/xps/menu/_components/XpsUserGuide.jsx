@@ -2,8 +2,8 @@ import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
 import Link from "next/link";
 
-const XpsUserGuide = ({ userGuideDetails }) => {
-  console.log("user guides", userGuideDetails);
+const XpsUserGuide = ({ userGuideDetails }) => { 
+  
   return (
     <div className="grid grid-cols-2 gap-4 ">
       {userGuideDetails &&
@@ -13,6 +13,7 @@ const XpsUserGuide = ({ userGuideDetails }) => {
               href={`/xps-user-guide/${ug.chapterName}.pdf`}
               target="_blank"
               rel="noopener noreferrer"
+              key={ug.id}
             >
               <img
                 className="rounded-t-lg"

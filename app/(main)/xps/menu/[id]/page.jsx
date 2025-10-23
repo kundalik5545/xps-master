@@ -5,10 +5,11 @@ import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
+import XpsScripts from "../_components/scripts/XpsScripts";
+import XpsReleasedTask from "../_components/Tasks/XpsReleasedTask";
+import XpsTCPage from "../_components/testCases/XpsTestCases";
 import XpsTables from "../_components/XpsTables";
 import XpsUserGuide from "../_components/XpsUserGuide";
-import XpsTCPage from "../_components/testCases/XpsTestCases";
-import XpsScripts from "../_components/scripts/XpsScripts";
 
 const SingleMenuPage = () => {
   const { id } = useParams();
@@ -29,7 +30,6 @@ const SingleMenuPage = () => {
   // Page details
   const pageTitle = menuDetail?.menuName || "XPS Menu Details";
 
-  console.log("menuDetail is", menuDetail);
   return (
     <div>
       {/* Page Heading */}
@@ -99,11 +99,7 @@ const SingleMenuPage = () => {
           <XpsUserGuide userGuideDetails={menuDetail?.xpsUserGuides} />
         </TabsContent>
         <TabsContent value="task-list">
-          <div className="p-4">
-            <p className="text-sm text-muted-foreground">
-              Task list content will load here.
-            </p>
-          </div>
+          <XpsReleasedTask xpsTablesData={menuDetail?.xpsReleasedTasks} />
         </TabsContent>
       </Tabs>
     </div>
