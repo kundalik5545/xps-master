@@ -9,7 +9,7 @@ import EmScripts from "../_components/scripts/EmScripts";
 import EmUserGuide from "../_components/EmUserGuide";
 import EmMenuTables from "../_components/EmMenuTables";
 import emTablesColumns from "@/app/(main)/database/emember-tables/_components/tableColumns";
-import EmTCPage from "../_components/testCases/XpsTestCases";
+import EmTCPage from "../_components/testCases/eMTestCases";
 
 const SingleMenuPage = () => {
   const { id } = useParams();

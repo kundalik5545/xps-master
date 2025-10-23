@@ -8,7 +8,7 @@ const EmTCPage = ({ tcData, menuId }) => {
   const [loading, setLoading] = useState(false);
 
   return (
-    <div>
+    <div className="w-full">
       <PageHeader
         pageTitle="Emember Test Cases"
         pageDesc="Manage your emember test cases here"

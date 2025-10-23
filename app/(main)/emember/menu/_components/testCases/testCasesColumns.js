@@ -1,7 +1,3 @@
-import {
-  TableActions,
-  TableActionsHeader,
-} from "@/components/myUi/TableComponents";
 import Link from "next/link";
 
 export const emTCColumns = () => [
