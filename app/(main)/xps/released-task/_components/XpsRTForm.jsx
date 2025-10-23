@@ -194,12 +194,28 @@ export default function XpsRTForm({ onFormSubmit, editingData }) {
                         <SelectValue placeholder="Select Task State" />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem key="option1" value="option1">
-                          Option 1
+                        <SelectItem key="Proposed" value="Proposed">
+                          Proposed
                         </SelectItem>
 
-                        <SelectItem key="option2" value="option2">
-                          Option 2
+                        <SelectItem key="Active" value="Active">
+                          Active
+                        </SelectItem>
+
+                        <SelectItem key="Released" value="Released">
+                          Released
+                        </SelectItem>
+
+                        <SelectItem key="Resolved" value="Resolved">
+                          Resolved
+                        </SelectItem>
+
+                        <SelectItem key="Closed" value="Closed">
+                          Closed
+                        </SelectItem>
+
+                        <SelectItem key="Reassigned" value="Reassigned">
+                          Reassigned
                         </SelectItem>
                       </SelectContent>
                     </Select>
@@ -282,7 +298,7 @@ export default function XpsRTForm({ onFormSubmit, editingData }) {
                           Priti
                         </SelectItem>
 
-                        <SelectItem key="Swamt" value="Swamt">
+                        <SelectItem key="Swamy" value="Swamy">
                           Swamy
                         </SelectItem>
 

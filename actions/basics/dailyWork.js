@@ -31,6 +31,10 @@ const addUpdateDailyWork = async ({ payload, actions }) => {
       formSchema: DWTaskFormSchema,
     });
 
+    if (parseResult.error) {
+      return ApiRes(false, STATUS.BAD_REQUEST, parseResult.error.message, null);
+    }
+
     // Add new entry
     if (actions === "add") {
       const newDailyWork = await prisma.dailyWork.create({
@@ -60,6 +64,7 @@ const addUpdateDailyWork = async ({ payload, actions }) => {
       const existingDailyWork = await prisma.dailyWork.findUnique({
         where: { id },
       });
+
       if (!existingDailyWork) {
         return ApiRes(false, STATUS.NOT_FOUND, "Daily work not found", null);
       }

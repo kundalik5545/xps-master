@@ -37,6 +37,9 @@ const AllTaskListPage = () => {
       isEditing: isEditing,
       editingData: editingData,
       setData: setReleasedTasksData,
+      setIsDialogOpen: setIsDialogOpen,
+      setIsEditing: setIsEditing,
+      setEditingData: setEditingData,
     });
 
   const onEdit = (record) => {

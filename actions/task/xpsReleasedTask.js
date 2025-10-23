@@ -1,6 +1,6 @@
 "use server";
 
-import { prisma } from "@/generated/prisma";
+import prisma from "@/db/db.config";
 import { ApiRes } from "@/lib/ApiResponse";
 import { XpsRTFormSchema, ZodFormValidator } from "@/lib/Schema/FormSchema";
 import STATUS from "@/lib/Statuses";
@@ -37,6 +37,16 @@ const addUpdatedXpsReleasedTask = async ({ payload, actions }) => {
       const newReleasedTask = await prisma.xpsReleasedTasks.create({
         data: parseResult.data,
       });
+
+      if (!newReleasedTask) {
+        return ApiRes(
+          false,
+          STATUS.INTERNAL_SERVER_ERROR,
+          "Failed to create released task",
+          null
+        );
+      }
+
       return ApiRes(
         true,
         STATUS.CREATED,
@@ -47,10 +57,29 @@ const addUpdatedXpsReleasedTask = async ({ payload, actions }) => {
 
     // update released task
     if (actions === "update") {
+      const { id } = payload;
+
+      const existingReleasedTask = await prisma.xpsReleasedTasks.findUnique({
+        where: { id },
+      });
+
+      if (!existingReleasedTask) {
+        return ApiRes(false, STATUS.NOT_FOUND, "Released task not found", null);
+      }
       const updatedReleasedTask = await prisma.xpsReleasedTasks.update({
-        where: { id: parseResult.data.id },
+        where: { id },
         data: parseResult.data,
       });
+
+      if (!updatedReleasedTask) {
+        return ApiRes(
+          false,
+          STATUS.INTERNAL_SERVER_ERROR,
+          "Failed to update released task",
+          null
+        );
+      }
+
       return ApiRes(
         true,
         STATUS.OK,
@@ -61,7 +90,7 @@ const addUpdatedXpsReleasedTask = async ({ payload, actions }) => {
 
     return ApiRes(false, STATUS.BAD_REQUEST, "Invalid action", null);
   } catch (error) {
-    console.log("Error while adding/updating released task: ", error);
+    console.log("Error while adding/updating released task: ", error.message);
     return ApiRes(false, STATUS.INTERNAL_SERVER_ERROR, error.message, null);
   }
 };
