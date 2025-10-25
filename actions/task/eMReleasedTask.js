@@ -1,7 +1,7 @@
 "use server";
 import prisma from "@/db/db.config";
 import { ApiRes } from "@/lib/ApiResponse";
-import { ZodFormValidator } from "@/lib/Schema/FormSchema";
+import { EmRTFormSchema, ZodFormValidator } from "@/lib/Schema/FormSchema";
 import STATUS from "@/lib/Statuses";
 
 // Get all released tasks
@@ -25,7 +25,7 @@ const addUpdatedEmReleasedTask = async ({ payload, actions }) => {
   try {
     const parseResult = ZodFormValidator({
       payload,
-      formSchema: ReleasedTaskFormSchema,
+      formSchema: EmRTFormSchema,
     });
 
     if (parseResult.error) {
@@ -34,7 +34,7 @@ const addUpdatedEmReleasedTask = async ({ payload, actions }) => {
 
     // add new released task
     if (actions === "add") {
-      const newReleasedTask = await prisma.em_releasedTasks.create({
+      const newReleasedTask = await prisma.eM_ReleasedTasks.create({
         data: parseResult.data,
       });
       return ApiRes(
@@ -47,7 +47,7 @@ const addUpdatedEmReleasedTask = async ({ payload, actions }) => {
 
     // update released task
     if (actions === "update") {
-      const updatedReleasedTask = await prisma.em_releasedTasks.update({
+      const updatedReleasedTask = await prisma.eM_ReleasedTasks.update({
         where: { id: parseResult.data.id },
         data: parseResult.data,
       });
@@ -69,7 +69,7 @@ const addUpdatedEmReleasedTask = async ({ payload, actions }) => {
 // Delete released task
 const deleteEmReleasedTaskById = async (id) => {
   try {
-    const deletedReleasedTask = await prisma.em_releasedTasks.delete({
+    const deletedReleasedTask = await prisma.eM_ReleasedTasks.delete({
       where: { id },
     });
     return ApiRes(
