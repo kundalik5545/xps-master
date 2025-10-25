@@ -1,7 +1,7 @@
 import {
   TableActions,
   TableActionsHeader,
-} from "@/components/myUis/TableComponents";
+} from "@/components/myUi/TableComponents";
 import Link from "next/link";
 
 export const EmRTColumns = ({ onEdit, onDelete }) => [

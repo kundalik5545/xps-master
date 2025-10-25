@@ -1,5 +1,5 @@
 "use server";
-import { prisma } from "@/generated/prisma";
+import prisma from "@/db/db.config";
 import { ApiRes } from "@/lib/ApiResponse";
 import { ZodFormValidator } from "@/lib/Schema/FormSchema";
 import STATUS from "@/lib/Statuses";
@@ -7,7 +7,8 @@ import STATUS from "@/lib/Statuses";
 // Get all released tasks
 const getAllEmReleasedTasks = async () => {
   try {
-    const releasedTasks = await prisma.em_releasedTasks.findMany();
+    const releasedTasks = await prisma.eM_ReleasedTasks.findMany();
+
     return ApiRes(
       true,
       STATUS.OK,
