@@ -21,7 +21,7 @@ const PortalFilter = ({
         <SelectFilter
           column={table.getColumn("portalName")}
           placeholder="Filter by portal Name"
-          options={portalNames}
+          options={portalNames_Options}
         />
 
         <InputFilter
@@ -50,8 +50,10 @@ const PortalFilter = ({
 
 export default PortalFilter;
 
-const portalNames = [
-  { label: "Default", value: "Default" },
+const portalNames_Options = [
   { label: "XPS", value: "XPS" },
   { label: "eMember", value: "eMember" },
+  { label: "CAT", value: "CAT" },
+  { label: "Fusion", value: "Fusion" },
+  { label: "Hangfire", value: "Hangfire" },
 ];

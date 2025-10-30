@@ -29,45 +29,6 @@ const PortalsPage = () => {
     fetchPortals();
   }, []);
 
-  // const handleSubmit = async (formData) => {
-  //   try {
-  //     const actions = isEditing ? "update" : "add";
-
-  //     const payload = isEditing ? { formData, id: editingData.id } : formData;
-
-  //     const res = await addUpdatePortal({ payload, actions });
-  //     if (!res.success) {
-  //       toast.error(
-  //         `❌ Failed to ${isEditing ? "update" : "add"} portal: ` + res.message
-  //       );
-  //     }
-
-  //     if (res.success) {
-  //       toast.success(
-  //         `✅ Portal ${isEditing ? "updated" : "added"} successfully`
-  //       );
-
-  //       setIsDialogOpen(false);
-
-  //       // Refresh the data
-  //       const updatedData = isEditing
-  //         ? portalData.map((item) =>
-  //             item.id === res.resData.id ? res.resData : item
-  //           )
-  //         : [...portalData, res.data];
-
-  //       setPortalData(updatedData);
-  //       setIsEditing(false);
-  //       setEditingData(null);
-  //     }
-  //   } catch (error) {
-  //     toast.error(
-  //       `❌ Failed to ${isEditing ? "update" : "add"} portal: ` + error.message
-  //     );
-  //   }
-  // };
-
-  // Portal add update form
   const { handleFormSubmit: handleSubmit, loading: formSubmitLoading } =
     useFormSubmit({
       formSubmitAction: addUpdatePortal,
