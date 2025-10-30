@@ -4,13 +4,11 @@ import {
   SelectFilter,
 } from "@/components/myUi/FilterComponents";
 import { TableColVisibilitySelect } from "@/components/myUi/TableComponents";
-import { cn } from "@/lib/utils";
 
-const MenuFilter = ({ table, rowSelection, resetFilters }) => {
+const MenuFilter = ({ table, resetFilters }) => {
   return (
-    <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between flex-wrap">
-      {/* Left side: filters */}
-      <div className="flex flex-col gap-3 w-full md:flex-row md:flex-1 md:items-center">
+    <div className="grid grid-cols-1 sm:grid-cols-12 gap-3">
+      <div className="grid sm:col-span-11 grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-3">
         {/* Menu Name */}
         <InputFilter
           column={table.getColumn("menuName")}
@@ -39,13 +37,10 @@ const MenuFilter = ({ table, rowSelection, resetFilters }) => {
         />
       </div>
 
-      {/* Hide show columns */}
-      <TableColVisibilitySelect table={table} />
+      <div className="grid col-span-1 xl:grid-cols-2 2xl:grid-cols-2  2xl:justify-end gap-4 2xl:items-center">
+        {/* Hide show columns */}
+        <TableColVisibilitySelect table={table} />
 
-      {/* Right side: actions */}
-      <div
-        className={cn("flex items-center", rowSelection ? "gap-2" : "gap-0")}
-      >
         <FilterReset resetFilters={resetFilters} />
       </div>
     </div>

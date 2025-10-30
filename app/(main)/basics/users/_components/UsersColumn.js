@@ -34,6 +34,7 @@ export const userColumns = ({ onEdit, onDelete, deleting } = {}) => [
         </Link>
       );
     },
+    filterFn: "includesString",
   },
   {
     accessorKey: "xpsId",
@@ -41,6 +42,7 @@ export const userColumns = ({ onEdit, onDelete, deleting } = {}) => [
     enableSorting: true,
     enableHiding: true,
     enableColumnFilter: false,
+    filterFn: "includesString",
   },
   {
     accessorKey: "userHashId",
@@ -106,6 +108,7 @@ export const userColumns = ({ onEdit, onDelete, deleting } = {}) => [
     meta: {
       initiallyHidden: true, // Hide by default
     },
+    filterFn: "includesString",
   },
   {
     accessorKey: "eMemberSchemeId",
@@ -116,6 +119,7 @@ export const userColumns = ({ onEdit, onDelete, deleting } = {}) => [
     meta: {
       initiallyHidden: true,
     },
+    filterFn: "includesString",
   },
   {
     accessorKey: "niNumber",

@@ -25,6 +25,7 @@ const UsersPage = () => {
     const fetchUsers = async () => {
       const res = await getAllUsers();
       setUsersData(res.resData);
+      console.log("usersData from db", res.resData);
     };
     fetchUsers();
   }, []);

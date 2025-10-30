@@ -173,9 +173,9 @@ const TableColVisibilitySelect = ({ table }) => {
     <div className="inline-block text-left">
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
-          <Button variant="outline" className="ml-auto">
+          <Button variant="secondary" className="ml-auto">
             <Columns3 />
-            Columns <ChevronDown />
+            {/* <ChevronDown /> */}
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end">

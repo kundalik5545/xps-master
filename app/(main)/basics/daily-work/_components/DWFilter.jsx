@@ -5,8 +5,6 @@ import {
   SelectFilter,
 } from "@/components/myUi/FilterComponents";
 import { TableColVisibilitySelect } from "@/components/myUi/TableComponents";
-import { cn } from "@/lib/utils";
-
 const DWFilter = ({
   table,
   rowSelection,
@@ -15,69 +13,59 @@ const DWFilter = ({
   loading,
 }) => {
   return (
-    <div className="grid sm:grid-cols-1 lg:grid-cols-2 items-center gap-4 mb-2">
-      {/* Left side: filters */}
-      <div className="flex items-center  flex-col gap-2">
-        <div className="flex flex-col md:flex-row md:items-center gap-2">
-          {/* Task Id */}
-          <InputFilter
-            column={table.getColumn("taskId")}
-            placeholder="Search by task id"
-          />
+    <div className="grid grid-cols-1 sm:grid-cols-12 gap-3">
+      <div className="grid sm:col-span-11 grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-3">
+        {/* Task Id */}
+        <InputFilter
+          column={table.getColumn("taskId")}
+          placeholder="Search by task id"
+        />
 
-          {/* Task Title */}
-          <InputFilter
-            column={table.getColumn("taskTitle")}
-            placeholder="Search by task title"
-          />
+        {/* Task Title */}
+        <InputFilter
+          column={table.getColumn("taskTitle")}
+          placeholder="Search by task title"
+        />
 
-          {/* Task State */}
-          <SelectFilter
-            column={table.getColumn("taskState")}
-            placeholder="Search by task state"
-            options={taskStateOptions}
-          />
-        </div>
+        {/* Task State */}
+        <SelectFilter
+          column={table.getColumn("taskState")}
+          placeholder="Search by task state"
+          options={taskStateOptions}
+        />
 
-        <div className="flex flex-col md:flex-row md:items-center gap-2">
-          {/* Portal Name */}
-          <SelectFilter
-            column={table.getColumn("portalName")}
-            placeholder="Search by portal name"
-            options={portalNameOptions}
-          />
+        {/* Portal Name */}
+        <SelectFilter
+          column={table.getColumn("portalName")}
+          placeholder="Search by portal name"
+          options={portalNameOptions}
+        />
 
-          {/* Env */}
-          <SelectFilter
-            column={table.getColumn("env")}
-            placeholder="Search by env"
-            options={envOptions}
-          />
+        {/* Env */}
+        <SelectFilter
+          column={table.getColumn("env")}
+          placeholder="Search by env"
+          options={envOptions}
+        />
 
-          {/* Assigned By */}
-          <SelectFilter
-            column={table.getColumn("assignedBy")}
-            placeholder="Search by assigned by"
-            options={assignedByOptions}
-          />
-        </div>
+        {/* Assigned By */}
+        <SelectFilter
+          column={table.getColumn("assignedBy")}
+          placeholder="Search by assigned by"
+          options={assignedByOptions}
+        />
       </div>
 
-      <div className="flex flex-col items-start sm:flex-row sm:justify-between md:items-center gap-2 md:justify-end">
+      <div className="grid col-span-1 gap-2 items-center">
         {/* Hide show columns */}
         <TableColVisibilitySelect table={table} />
 
-        {/* Right side: actions */}
-        <div
-          className={cn("flex items-center", rowSelection ? "gap-2" : "gap-0")}
-        >
-          <FilterMultiDelete
-            rowSelection={rowSelection}
-            handleMultiDelete={handleMultiDelete}
-            loading={loading}
-          />
-          <FilterReset resetFilters={resetFilters} />
-        </div>
+        <FilterMultiDelete
+          rowSelection={rowSelection}
+          handleMultiDelete={handleMultiDelete}
+          loading={loading}
+        />
+        <FilterReset resetFilters={resetFilters} />
       </div>
     </div>
   );

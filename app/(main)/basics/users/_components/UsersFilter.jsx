@@ -14,59 +14,51 @@ const UsersFilter = ({
   loading,
 }) => {
   return (
-    <div className="grid sm:grid-cols-1 lg:grid-cols-2 items-center gap-4 mb-2">
-      {/* Left side: filters */}
-      <div className="flex flex-col gap-2">
-        <div className="flex flex-col md:flex-row md:items-center gap-2">
-          <InputFilter
-            column={table.getColumn("username")}
-            placeholder="Search by user name"
-          />
+    <div className="grid grid-cols-1 sm:grid-cols-12 gap-3">
+      <div className="grid sm:col-span-11 grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-3">
+        <InputFilter
+          column={table.getColumn("username")}
+          placeholder="Search by user name"
+        />
 
-          <InputFilter
-            column={table.getColumn("eMemberId")}
-            placeholder="Search by eMember id"
-          />
+        <InputFilter
+          column={table.getColumn("eMemberId")}
+          placeholder="Search by eMember id"
+        />
 
-          <InputFilter
-            column={table.getColumn("xpsId")}
-            placeholder="Search by xps id"
-          />
-        </div>
+        <InputFilter
+          column={table.getColumn("xpsId")}
+          placeholder="Search by xps id"
+        />
+        <InputFilter
+          column={table.getColumn("userHashId")}
+          placeholder="Search by user hash id"
+        />
 
-        <div className="flex flex-col md:flex-row md:items-center  gap-2">
-          <InputFilter
-            column={table.getColumn("userHashId")}
-            placeholder="Search by user hash id"
-          />
+        <InputFilter
+          column={table.getColumn("xpsSchemeId")}
+          placeholder="Search by xps scheme id"
+        />
 
-          <InputFilter
-            column={table.getColumn("xpsSchemeId")}
-            placeholder="Search by xps scheme id"
-          />
-
-          <InputFilter
-            column={table.getColumn("eMemberSchemeId")}
-            placeholder="Search by EM scheme id"
-          />
-        </div>
+        <InputFilter
+          column={table.getColumn("eMemberSchemeId")}
+          placeholder="Search by EM scheme id"
+        />
       </div>
 
-      <div className="flex flex-col items-start sm:flex-row sm:justify-between md:items-center gap-2 md:justify-end">
+      <div className="grid col-span-1 gap-2 items-center">
         {/* Hide show columns */}
         <TableColVisibilitySelect table={table} />
 
-        {/* Right side: actions */}
-        <div
-          className={cn("flex items-center", rowSelection ? "gap-2" : "gap-0")}
-        >
-          <FilterMultiDelete
-            rowSelection={rowSelection}
-            handleMultiDelete={handleMultiDelete}
-            loading={loading}
-          />
-          <FilterReset resetFilters={resetFilters} />
-        </div>
+        {/* Multi Delete */}
+        <FilterMultiDelete
+          rowSelection={rowSelection}
+          handleMultiDelete={handleMultiDelete}
+          loading={loading}
+        />
+
+        {/* Reset Filters */}
+        <FilterReset resetFilters={resetFilters} />
       </div>
     </div>
   );

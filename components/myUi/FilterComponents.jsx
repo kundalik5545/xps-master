@@ -23,11 +23,10 @@ const FilterReset = ({ resetFilters }) => {
       {resetFilters && (
         <Button
           onClick={resetFilters}
-          variant={"outline"}
+          variant={"secondary"}
           className={"text-muted-foreground"}
         >
           <FunnelX />
-          Reset Filters
         </Button>
       )}
     </div>
