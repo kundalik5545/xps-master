@@ -18,6 +18,7 @@ export const dwTaskColumns = ({ onEdit, onDelete }) => [
     enableSorting: true,
     enableHiding: true,
     enableColumnFilter: true,
+    filterFn: "includesString",
   },
   {
     accessorKey: "taskTitle",

@@ -8,57 +8,48 @@ import { cn } from "@/lib/utils";
 
 const XpsTCFilter = ({ table, rowSelection, resetFilters }) => {
   return (
-    <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between flex-wrap">
-      <div className="flex flex-col gap-3">
-        {/* Left side: filters */}
-        <div className="flex flex-col gap-3 w-full md:flex-row md:flex-1 md:items-center">
-          {/* Menu Name */}
-          <InputFilter
-            column={table.getColumn("testCaseName")}
-            placeholder="Search by test case name"
-          />
-          {/* Scheme Type */}
-          <SelectFilter
-            column={table.getColumn("schemeType")}
-            placeholder="Filter by scheme type"
-            options={schemeTypeOptions}
-          />
+    <div className="grid grid-cols-1 sm:grid-cols-12 gap-3">
+      <div className="grid sm:col-span-11 grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-3">
+        {/* Test Case Name */}
+        <InputFilter
+          column={table.getColumn("testCaseName")}
+          placeholder="Search by test case name"
+        />
 
-          {/* Scheme Level */}
-          <SelectFilter
-            column={table.getColumn("schemeLevel")}
-            placeholder="Filter by scheme level"
-            options={schemeLevelOptions}
-          />
-        </div>
+        {/* Scheme Type */}
+        <SelectFilter
+          column={table.getColumn("schemeType")}
+          placeholder="Filter by scheme type"
+          options={schemeTypeOptions}
+        />
 
-        <div className="flex flex-col gap-3 w-full md:flex-row md:flex-1 md:items-center">
-          {/* Module */}
-          <SelectFilter
-            column={table.getColumn("module")}
-            placeholder="Filter by module"
-            options={moduleOptions}
-          />
+        {/* Scheme Level */}
+        <SelectFilter
+          column={table.getColumn("schemeLevel")}
+          placeholder="Filter by scheme level"
+          options={schemeLevelOptions}
+        />
 
-          {/* Automation Status */}
-          <SelectFilter
-            column={table.getColumn("automationStatus")}
-            placeholder="Filter by automation status"
-            options={automationStatusOptions}
-          />
-        </div>
+        {/* Module */}
+        <SelectFilter
+          column={table.getColumn("module")}
+          placeholder="Filter by module"
+          options={moduleOptions}
+        />
+
+        {/* Automation Status */}
+        <SelectFilter
+          column={table.getColumn("automationStatus")}
+          placeholder="Filter by automation status"
+          options={automationStatusOptions}
+        />
       </div>
 
-      <div className="flex items-center gap-3">
+      <div className="grid col-span-1 2xl:grid-cols-2 gap-2 justify-end 2xl:items-center">
         {/* Hide show columns */}
         <TableColVisibilitySelect table={table} />
 
-        {/* Right side: actions */}
-        <div
-          className={cn("flex items-center", rowSelection ? "gap-2" : "gap-0")}
-        >
-          <FilterReset resetFilters={resetFilters} />
-        </div>
+        <FilterReset resetFilters={resetFilters} />
       </div>
     </div>
   );
