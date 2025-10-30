@@ -52,7 +52,7 @@ const TestCasePage = () => {
             <div className="flex justify-between items-center gap-2">
               <div className="flex items-center gap-2">
                 <span className="text-lg font-bold text-red-600">
-                  #{testCase.testCaseNo}
+                  #{testCase.testCaseNo} -
                 </span>
                 <span className="text-xl font-semibold text-blue-700 break-all">
                   {testCase.testCaseName}
@@ -95,9 +95,10 @@ const TestCasePage = () => {
           <div className="border-t border-border my-2" />
 
           {/* Results */}
-          <div className="flex flex-col gap-0 px-6 pb-6">
-            <div className="mb-1">
-              <span className="text-sm text-muted-foreground font-medium block mb-0.5">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 px-6 pb-6">
+            {/* Expected Result Card */}
+            <div className="bg-muted rounded-lg border border-border p-4 flex flex-col shadow-sm">
+              <span className="text-sm text-muted-foreground font-medium mb-1 tracking-wide">
                 Expected Result
               </span>
               <span className="text-base font-semibold break-all block">
@@ -106,8 +107,9 @@ const TestCasePage = () => {
                 )}
               </span>
             </div>
-            <div className="mb-1 mt-3">
-              <span className="text-sm text-muted-foreground font-medium block mb-0.5">
+            {/* Actual Result Card */}
+            <div className="bg-muted rounded-lg border border-border p-4 flex flex-col shadow-sm">
+              <span className="text-sm text-muted-foreground font-medium mb-1 tracking-wide">
                 Actual Result
               </span>
               <span className="text-base font-semibold break-all block">
@@ -116,8 +118,9 @@ const TestCasePage = () => {
                 )}
               </span>
             </div>
-            <div className="mb-0 mt-3">
-              <span className="text-sm text-muted-foreground font-medium block mb-0.5">
+            {/* Comments Card */}
+            <div className="bg-muted rounded-lg border border-border p-4 flex flex-col shadow-sm">
+              <span className="text-sm text-muted-foreground font-medium mb-1 tracking-wide">
                 Comments
               </span>
               <span className="text-base break-all block">

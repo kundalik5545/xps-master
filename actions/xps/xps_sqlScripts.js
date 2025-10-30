@@ -18,11 +18,15 @@ const getXpsSqlScripts = async () => {
 // create sql script
 const addUpdateSqlScript = async ({ payload, actions }) => {
   try {
-    // Xod form data validator
+    // Zod form data validator
     const parseResult = ZodFormValidator({
       payload,
       formSchema: SqlScriptSchema,
     });
+
+    if (parseResult.success === false) {
+      return ApiRes(false, STATUS.BAD_REQUEST, parseResult.error.message, null);
+    }
 
     // Add new entry
     if (actions === "add") {

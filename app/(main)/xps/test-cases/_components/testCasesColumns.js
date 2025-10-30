@@ -84,6 +84,9 @@ export const xpsTCColumns = ({ onEdit, onDelete }) => [
     enableSorting: true,
     enableHiding: true,
     enableColumnFilter: true,
+    meta: {
+      initiallyHidden: true, // Hide by default
+    },
   },
   {
     accessorKey: "xpsMenuId",
