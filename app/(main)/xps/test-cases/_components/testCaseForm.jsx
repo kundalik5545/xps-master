@@ -32,6 +32,7 @@ export default function TestCaseForm({ onFormSubmit, editingData }) {
       schemeLevel: "",
       module: "",
       automationStatus: "",
+      testStatus: "",
       expectedResult: "",
       actualResult: "",
       comments: "",
@@ -62,7 +63,7 @@ export default function TestCaseForm({ onFormSubmit, editingData }) {
             control={form.control}
             name="testCaseNo"
             render={({ field }) => (
-              <FormItem className="col-span-12 col-start-auto flex self-end flex-col gap-2 space-y-0 items-start">
+              <FormItem className="col-span-4 col-start-auto flex self-end flex-col gap-2 space-y-0 items-start">
                 <FormLabel className="flex shrink-0">Test Case No</FormLabel>
 
                 <div className="w-full">
@@ -94,6 +95,90 @@ export default function TestCaseForm({ onFormSubmit, editingData }) {
 
           <FormField
             control={form.control}
+            name="automationStatus"
+            render={({ field }) => (
+              <FormItem className="col-span-4 col-start-auto flex self-end flex-col gap-2 space-y-0 items-start">
+                <FormLabel className="flex shrink-0">
+                  Automation Status
+                </FormLabel>
+
+                <div className="w-full">
+                  <FormControl>
+                    <Select
+                      key="select-3"
+                      id="automationStatus"
+                      {...field}
+                      onValueChange={field.onChange}
+                    >
+                      <SelectTrigger className="w-full ">
+                        <SelectValue placeholder="Select Automation Status" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem key="Automated" value="Automated">
+                          Automated
+                        </SelectItem>
+                        <SelectItem key="NotAutomated" value="NotAutomated">
+                          NotAutomated
+                        </SelectItem>
+                        <SelectItem key="InProgress" value="InProgress">
+                          InProgress
+                        </SelectItem>
+                        <SelectItem key="OnHold" value="OnHold">
+                          OnHold
+                        </SelectItem>
+                        <SelectItem key="Cancelled" value="Cancelled">
+                          Cancelled
+                        </SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </FormControl>
+
+                  <FormMessage />
+                </div>
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name="testStatus"
+            render={({ field }) => (
+              <FormItem className="col-span-4 col-start-auto flex self-end flex-col gap-2 space-y-0 items-start">
+                <FormLabel className="flex shrink-0">Test Status</FormLabel>
+
+                <div className="w-full">
+                  <FormControl>
+                    <Select
+                      key="select-4"
+                      id="testStatus"
+                      {...field}
+                      onValueChange={field.onChange}
+                    >
+                      <SelectTrigger className="w-full ">
+                        <SelectValue placeholder="Select Test Status" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem key="Passed" value="Passed">
+                          Passed
+                        </SelectItem>
+                        <SelectItem key="Failed" value="Failed">
+                          Failed
+                        </SelectItem>
+                        <SelectItem key="Skipped" value="Skipped">
+                          Skipped
+                        </SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </FormControl>
+
+                  <FormMessage />
+                </div>
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
             name="testCaseName"
             render={({ field }) => (
               <FormItem className="col-span-12 col-start-auto flex self-end flex-col gap-2 space-y-0 items-start">
@@ -101,23 +186,13 @@ export default function TestCaseForm({ onFormSubmit, editingData }) {
 
                 <div className="w-full">
                   <FormControl>
-                    <div className="relative w-full">
-                      <Input
-                        key="text-input-1"
-                        placeholder="Enter Test Case Name"
-                        type="text"
-                        id="testCaseName"
-                        className=" ps-9"
-                        {...field}
-                      />
-                      <div
-                        className={
-                          "text-muted-foreground pointer-events-none absolute inset-y-0 flex items-center justify-center  peer-disabled:opacity-50 start-0 ps-3"
-                        }
-                      >
-                        <ALargeSmall className="size-4" strokeWidth={2} />
-                      </div>
-                    </div>
+                    <Textarea
+                      key="textarea-0"
+                      placeholder="Enter Test Case Name"
+                      id="testCaseName"
+                      className="min-h-16"
+                      {...field}
+                    />
                   </FormControl>
 
                   <FormMessage />
@@ -130,7 +205,7 @@ export default function TestCaseForm({ onFormSubmit, editingData }) {
             control={form.control}
             name="schemeType"
             render={({ field }) => (
-              <FormItem className="col-span-12 col-start-auto flex self-end flex-col gap-2 space-y-0 items-start">
+              <FormItem className="col-span-4 col-start-auto flex self-end flex-col gap-2 space-y-0 items-start">
                 <FormLabel className="flex shrink-0">
                   Scheme Type (Optional)
                 </FormLabel>
@@ -179,7 +254,7 @@ export default function TestCaseForm({ onFormSubmit, editingData }) {
             control={form.control}
             name="schemeLevel"
             render={({ field }) => (
-              <FormItem className="col-span-12 col-start-auto flex self-end flex-col gap-2 space-y-0 items-start">
+              <FormItem className="col-span-4 col-start-auto flex self-end flex-col gap-2 space-y-0 items-start">
                 <FormLabel className="flex shrink-0">Scheme Level</FormLabel>
 
                 <div className="w-full">
@@ -217,7 +292,7 @@ export default function TestCaseForm({ onFormSubmit, editingData }) {
             control={form.control}
             name="module"
             render={({ field }) => (
-              <FormItem className="col-span-12 col-start-auto flex self-end flex-col gap-2 space-y-0 items-start">
+              <FormItem className="col-span-4 col-start-auto flex self-end flex-col gap-2 space-y-0 items-start">
                 <FormLabel className="flex shrink-0">Module</FormLabel>
 
                 <div className="w-full">
@@ -249,52 +324,6 @@ export default function TestCaseForm({ onFormSubmit, editingData }) {
                         </SelectItem>
                         <SelectItem key="Leavers" value="Leavers">
                           Leavers
-                        </SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </FormControl>
-
-                  <FormMessage />
-                </div>
-              </FormItem>
-            )}
-          />
-
-          <FormField
-            control={form.control}
-            name="automationStatus"
-            render={({ field }) => (
-              <FormItem className="col-span-12 col-start-auto flex self-end flex-col gap-2 space-y-0 items-start">
-                <FormLabel className="flex shrink-0">
-                  Automation Status
-                </FormLabel>
-
-                <div className="w-full">
-                  <FormControl>
-                    <Select
-                      key="select-3"
-                      id="automationStatus"
-                      {...field}
-                      onValueChange={field.onChange}
-                    >
-                      <SelectTrigger className="w-full ">
-                        <SelectValue placeholder="Select Automation Status" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem key="Automated" value="Automated">
-                          Automated
-                        </SelectItem>
-                        <SelectItem key="NotAutomated" value="NotAutomated">
-                          NotAutomated
-                        </SelectItem>
-                        <SelectItem key="InProgress" value="InProgress">
-                          InProgress
-                        </SelectItem>
-                        <SelectItem key="OnHold" value="OnHold">
-                          OnHold
-                        </SelectItem>
-                        <SelectItem key="Cancelled" value="Cancelled">
-                          Cancelled
                         </SelectItem>
                       </SelectContent>
                     </Select>

@@ -103,9 +103,78 @@ const deleteXpsTestCase = async (id) => {
   }
 };
 
+// get xps test cases stats
+const getXpsTestCasesStats = async () => {
+  try {
+    // Get total test cases
+    const totalTestCases = await prisma.xpsTestCases.count();
+
+    // Get counts by automation status
+    const automationStats = await prisma.xpsTestCases.groupBy({
+      by: ["automationStatus"],
+      _count: { automationStatus: true },
+    });
+
+    // Map automation statuses
+    let automated = 0;
+    let notAutomated = 0;
+    let passed = 0;
+    let failed = 0;
+    let skipped = 0;
+
+    automationStats.forEach((stat) => {
+      const status = stat.automationStatus?.toLowerCase() || "";
+      if (status === "automated") automated += stat._count.automationStatus;
+      else if (status === "not automated")
+        notAutomated += stat._count.automationStatus;
+      else if (status === "passed") passed += stat._count.automationStatus;
+      else if (status === "failed") failed += stat._count.automationStatus;
+      else if (status === "skipped") skipped += stat._count.automationStatus;
+    });
+
+    // Get module-wise stats
+    const moduleStats = await prisma.xpsTestCases.groupBy({
+      by: ["module"],
+      _count: { module: true },
+    });
+
+    // Get schemeLevel-wise stats
+    const schemeLevelStats = await prisma.xpsTestCases.groupBy({
+      by: ["schemeLevel"],
+      _count: { schemeLevel: true },
+    });
+
+    // Optionally, also fetch pass/fail/skipped status if this is a separate field
+    // If automationStatus holds pass/fail/skipped, then above already counts them
+    // Otherwise, update the logic here if you have a dedicated result field
+
+    console.log("not automated", notAutomated);
+    return ApiRes(true, STATUS.OK, "Xps test cases stats fetched.", {
+      totalTestCases,
+      automated,
+      notAutomated,
+      passed,
+      failed,
+      skipped,
+      moduleStats: moduleStats.map((m) => ({
+        module: m.module,
+        count: m._count.module,
+      })),
+      schemeLevelStats: schemeLevelStats.map((s) => ({
+        schemeLevel: s.schemeLevel,
+        count: s._count.schemeLevel,
+      })),
+    });
+  } catch (error) {
+    console.log("Error while getting xps test cases stats: ", error.message);
+    return ApiRes(false, STATUS.ERROR, error.message);
+  }
+};
+
 export {
   getXpsTestCases,
   getXpsTestCaseById,
   addUpdateXpsTestCase,
   deleteXpsTestCase,
+  getXpsTestCasesStats,
 };

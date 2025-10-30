@@ -91,6 +91,7 @@ model XpsTestCases {
   schemeLevel    SchemeLevel
   module         Module
   automationStatus AutomationStatus
+  testStatus     TestStatus
   expectedResult String?
   actualResult   String?
   comments       String? 
@@ -281,6 +282,7 @@ model EM_ReleasedTasks {
   testCaseName   String   
   portalName  PortalName
   automationStatus AutomationStatus
+  testStatus     TestStatus
   expectedResult String?
   actualResult   String?
   comments       String? 
@@ -410,6 +412,12 @@ enum AutomationStatus {
   InProgress
   OnHold
   Cancelled
+}
+
+enum TestStatus {
+  Passed
+  Failed
+  Skipped
 }
 
 enum SchemeType {
