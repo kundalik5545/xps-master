@@ -74,10 +74,10 @@ CREATE TABLE "XpsTestCases" (
     "schemeLevel" TEXT NOT NULL,
     "module" TEXT NOT NULL,
     "automationStatus" TEXT NOT NULL,
+    "testStatus" TEXT NOT NULL,
     "expectedResult" TEXT,
     "actualResult" TEXT,
     "comments" TEXT,
-    "menuName" TEXT,
     "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" DATETIME NOT NULL,
     "xpsMenuId" INTEGER,
@@ -188,7 +188,9 @@ CREATE TABLE "Em_Tables" (
     "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
     "emTableName" TEXT NOT NULL,
     "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "updatedAt" DATETIME NOT NULL
+    "updatedAt" DATETIME NOT NULL,
+    "emMenuId" INTEGER,
+    CONSTRAINT "Em_Tables_emMenuId_fkey" FOREIGN KEY ("emMenuId") REFERENCES "Em_Menus" ("id") ON DELETE SET NULL ON UPDATE CASCADE
 );
 
 -- CreateTable
@@ -208,7 +210,9 @@ CREATE TABLE "EM_Scripts" (
     "emSqlScript" TEXT NOT NULL,
     "emScriptInfo" TEXT,
     "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "updatedAt" DATETIME NOT NULL
+    "updatedAt" DATETIME NOT NULL,
+    "emMenuId" INTEGER,
+    CONSTRAINT "EM_Scripts_emMenuId_fkey" FOREIGN KEY ("emMenuId") REFERENCES "Em_Menus" ("id") ON DELETE SET NULL ON UPDATE CASCADE
 );
 
 -- CreateTable
@@ -223,7 +227,9 @@ CREATE TABLE "EM_Bugs" (
     "emBugUrl" TEXT NOT NULL,
     "comments" TEXT,
     "createdAt" DATETIME,
-    "updatedAt" DATETIME NOT NULL
+    "updatedAt" DATETIME NOT NULL,
+    "emMenuId" INTEGER,
+    CONSTRAINT "EM_Bugs_emMenuId_fkey" FOREIGN KEY ("emMenuId") REFERENCES "Em_Menus" ("id") ON DELETE SET NULL ON UPDATE CASCADE
 );
 
 -- CreateTable
@@ -238,19 +244,50 @@ CREATE TABLE "EM_ReleasedTasks" (
     "emTaskUrl" TEXT NOT NULL,
     "emComments" TEXT,
     "createdAt" DATETIME,
+    "updatedAt" DATETIME NOT NULL,
+    "emMenuId" INTEGER,
+    CONSTRAINT "EM_ReleasedTasks_emMenuId_fkey" FOREIGN KEY ("emMenuId") REFERENCES "Em_Menus" ("id") ON DELETE SET NULL ON UPDATE CASCADE
+);
+
+-- CreateTable
+CREATE TABLE "Em_TestCases" (
+    "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    "testCaseNo" TEXT,
+    "testCaseName" TEXT NOT NULL,
+    "portalName" TEXT NOT NULL,
+    "automationStatus" TEXT NOT NULL,
+    "testStatus" TEXT NOT NULL,
+    "expectedResult" TEXT,
+    "actualResult" TEXT,
+    "comments" TEXT,
+    "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" DATETIME NOT NULL,
+    "emMenuId" INTEGER,
+    CONSTRAINT "Em_TestCases_emMenuId_fkey" FOREIGN KEY ("emMenuId") REFERENCES "Em_Menus" ("id") ON DELETE SET NULL ON UPDATE CASCADE
+);
+
+-- CreateTable
+CREATE TABLE "DailyWork" (
+    "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    "taskId" INTEGER,
+    "taskTitle" TEXT,
+    "taskState" TEXT,
+    "portalName" TEXT DEFAULT 'XPS',
+    "env" TEXT,
+    "assignedBy" TEXT,
+    "taskURL" TEXT,
+    "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" DATETIME NOT NULL
 );
 
 -- CreateTable
-CREATE TABLE "RegComments" (
-    "id" TEXT NOT NULL PRIMARY KEY,
-    "numId" INTEGER NOT NULL,
-    "taskId" INTEGER,
-    "taskTitle" TEXT,
-    "comments" TEXT,
-    "portalName" TEXT DEFAULT 'XPS',
+CREATE TABLE "DailyWorkComments" (
+    "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    "comments" TEXT NOT NULL,
     "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "updatedAt" DATETIME NOT NULL
+    "updatedAt" DATETIME NOT NULL,
+    "dailyWorkId" INTEGER NOT NULL,
+    CONSTRAINT "DailyWorkComments_dailyWorkId_fkey" FOREIGN KEY ("dailyWorkId") REFERENCES "DailyWork" ("id") ON DELETE RESTRICT ON UPDATE CASCADE
 );
 
 -- CreateTable
@@ -265,6 +302,16 @@ CREATE TABLE "ProposedTask" (
     "qaComments" TEXT,
     "qaTaskUrl" TEXT,
     "createdAt" DATETIME,
+    "updatedAt" DATETIME NOT NULL
+);
+
+-- CreateTable
+CREATE TABLE "Todo" (
+    "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    "title" TEXT NOT NULL,
+    "description" TEXT,
+    "completed" BOOLEAN NOT NULL DEFAULT false,
+    "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" DATETIME NOT NULL
 );
 
@@ -294,9 +341,6 @@ CREATE UNIQUE INDEX "EM_Bugs_emBugId_key" ON "EM_Bugs"("emBugId");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "EM_ReleasedTasks_emTaskId_key" ON "EM_ReleasedTasks"("emTaskId");
-
--- CreateIndex
-CREATE UNIQUE INDEX "RegComments_numId_key" ON "RegComments"("numId");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "ProposedTask_numId_key" ON "ProposedTask"("numId");

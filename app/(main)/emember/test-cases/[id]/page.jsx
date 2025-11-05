@@ -1,9 +1,20 @@
 "use client";
+import React, { useEffect, useState } from "react";
+import { useParams } from "next/navigation";
 import { getEmTestCaseById } from "@/actions/emember/em_TestCases";
 import PageHeader from "@/components/myUi/PageHeader";
 import { Button } from "@/components/ui/button";
-import { useParams } from "next/navigation";
-import { useEffect, useState } from "react";
+
+const CardRow = ({ label, value }) => (
+  <div className="flex flex-col px-4 py-3 min-w-0">
+    <span className="text-sm text-muted-foreground font-medium truncate">
+      {label}
+    </span>
+    <span className="text-base font-semibold break-all">
+      {value ?? <span className="italic text-gray-400">—</span>}
+    </span>
+  </div>
+);
 
 const EmTCDetailsPage = () => {
   const { id } = useParams();
@@ -12,7 +23,6 @@ const EmTCDetailsPage = () => {
 
   useEffect(() => {
     if (!id) return;
-
     setLoading(true);
 
     const fetchTestCase = async () => {
@@ -41,7 +51,7 @@ const EmTCDetailsPage = () => {
             <div className="flex justify-between items-center gap-2">
               <div className="flex items-center gap-2">
                 <span className="text-lg font-bold text-red-600">
-                  #{testCase.testCaseNo}
+                  #{testCase.testCaseNo} -
                 </span>
                 <span className="text-xl font-semibold text-blue-700 break-all">
                   {testCase.testCaseName}
@@ -62,9 +72,24 @@ const EmTCDetailsPage = () => {
                   {testCase.portalName}
                 </span>
               )}
+              {testCase.module && (
+                <span className="inline-block text-xs font-medium rounded bg-blue-100 text-blue-800 px-2 py-0.5">
+                  {testCase.module}
+                </span>
+              )}
               {testCase.automationStatus && (
                 <span className="inline-block text-xs font-medium rounded bg-yellow-100 text-yellow-800 px-2 py-0.5">
                   {testCase.automationStatus}
+                </span>
+              )}
+              {testCase.testType && (
+                <span className="inline-block text-xs font-medium rounded bg-green-100 text-green-800 px-2 py-0.5">
+                  {testCase.testType}
+                </span>
+              )}
+              {testCase.testLevel && (
+                <span className="inline-block text-xs font-medium rounded bg-pink-100 text-pink-800 px-2 py-0.5">
+                  {testCase.testLevel}
                 </span>
               )}
             </div>
@@ -74,9 +99,10 @@ const EmTCDetailsPage = () => {
           <div className="border-t border-border my-2" />
 
           {/* Results */}
-          <div className="flex flex-col gap-0 px-6 pb-6">
-            <div className="mb-1">
-              <span className="text-sm text-muted-foreground font-medium block mb-0.5">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 px-6 pb-6">
+            {/* Expected Result Card */}
+            <div className="bg-muted rounded-lg border border-border p-4 flex flex-col shadow-sm">
+              <span className="text-sm text-muted-foreground font-medium mb-1 tracking-wide">
                 Expected Result
               </span>
               <span className="text-base font-semibold break-all block">
@@ -85,8 +111,9 @@ const EmTCDetailsPage = () => {
                 )}
               </span>
             </div>
-            <div className="mb-1 mt-3">
-              <span className="text-sm text-muted-foreground font-medium block mb-0.5">
+            {/* Actual Result Card */}
+            <div className="bg-muted rounded-lg border border-border p-4 flex flex-col shadow-sm">
+              <span className="text-sm text-muted-foreground font-medium mb-1 tracking-wide">
                 Actual Result
               </span>
               <span className="text-base font-semibold break-all block">
@@ -95,8 +122,9 @@ const EmTCDetailsPage = () => {
                 )}
               </span>
             </div>
-            <div className="mb-0 mt-3">
-              <span className="text-sm text-muted-foreground font-medium block mb-0.5">
+            {/* Comments Card */}
+            <div className="bg-muted rounded-lg border border-border p-4 flex flex-col shadow-sm">
+              <span className="text-sm text-muted-foreground font-medium mb-1 tracking-wide">
                 Comments
               </span>
               <span className="text-base break-all block">

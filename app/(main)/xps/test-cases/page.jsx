@@ -35,7 +35,6 @@ const XpsTestCasesPage = () => {
     const fetchTestCasesData = async () => {
       setLoading(true);
       const res = await getXpsTestCases();
-      console.log("xps test cases data", res);
       setTestCasesData(res.resData);
       setLoading(false);
     };
